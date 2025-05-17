@@ -1,0 +1,141 @@
+.photo-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.photo-card-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.75rem;
+}
+
+.username {
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.more-options {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.photo-container {
+    width: 100%;
+    position: relative;
+}
+
+.photo-image {
+    width: 100%;
+    display: block;
+}
+
+.photo-actions {
+    display: flex;
+    padding: 0.75rem;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.action-button.save {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.action-button.liked {
+    color: var(--secondary-color);
+}
+
+.likes-count {
+    font-weight: 600;
+    padding: 0 0.75rem;
+}
+
+.photo-caption {
+    padding: 0.75rem;
+    word-wrap: break-word;
+}
+
+.caption-username {
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.hashtags {
+    margin-top: 0.25rem;
+    color: var(--primary-color);
+}
+
+.hashtag {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.comments-section {
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.75rem;
+}
+
+.comment {
+    margin-bottom: 0.5rem;
+}
+
+.comment-username {
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.no-comments {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.comment-form {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem;
+}
+
+.comment-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.post-comment-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.post-comment-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

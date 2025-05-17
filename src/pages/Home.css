@@ -1,0 +1,35 @@
+.home-container {
+    padding: 0 1rem;
+}
+
+.feed {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.empty-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    min-height: 50vh;
+}
+
+.empty-feed h2 {
+    margin-bottom: 1rem;
+}
+
+.empty-feed p {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.explore-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+}

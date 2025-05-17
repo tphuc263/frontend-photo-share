@@ -1,0 +1,10 @@
+.app-container {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 935px;
+        margin: 0 auto;
+    }
+}
