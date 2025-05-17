@@ -1,11 +1,9 @@
+// src/pages/Login.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import './Login.css';
 
-/**
- * Login page component
- */
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -19,42 +17,49 @@ function Login() {
         e.preventDefault();
         setError('');
 
-        // Basic validation
         if (!username || !password) {
-            setError('Please fill in all fields');
+            setError('Vui lòng điền đầy đủ thông tin đăng nhập');
             return;
         }
 
         try {
             setLoading(true);
 
-            // Simulate API call
-            // In a real app, this would be a fetch to your backend
-            setTimeout(() => {
-                // Mock successful login
-                const userData = {
-                    id: 'user123',
-                    username: username,
-                    name: 'Test User',
-                    avatar: 'https://via.placeholder.com/50'
-                };
+            // Gọi API đăng nhập
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-                // Store user data and auth status
-                setUser(userData);
-                setIsAuthenticated(true);
+            const data = await response.json();
 
-                // Store token in localStorage (in a real app)
-                // localStorage.setItem('token', 'mock-jwt-token');
+            if (!response.ok) {
+                throw new Error(data.message || 'Đăng nhập thất bại');
+            }
 
-                // Redirect to home page
-                navigate('/');
+            // Lưu token vào localStorage
+            localStorage.setItem('token', data.data.token);
 
-                setLoading(false);
-            }, 1000);
+            // Lưu thông tin user vào context
+            const userData = {
+                id: data.data.id,
+                username: data.data.username,
+                email: data.data.email,
+                roles: data.data.roles,
+            };
+            setUser(userData);
+            setIsAuthenticated(true);
+
+            // Chuyển hướng về trang chủ
+            navigate('/');
         } catch (err) {
-            setError('Login failed. Please check your credentials.');
-            setLoading(false);
             console.error('Login error:', err);
+            setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra thông tin.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -93,19 +98,19 @@ function Login() {
                         className="auth-button"
                         disabled={loading}
                     >
-                        {loading ? 'Logging in...' : 'Log In'}
+                        {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                     </button>
                 </form>
 
                 <div className="auth-links">
                     <Link to="/forgot-password" className="auth-link">
-                        Forgot password?
+                        Quên mật khẩu?
                     </Link>
                 </div>
             </div>
 
             <div className="auth-alternate">
-                <p>Don't have an account? <Link to="/register" className="auth-link">Sign up</Link></p>
+                <p>Chưa có tài khoản? <Link to="/register" className="auth-link">Đăng ký</Link></p>
             </div>
         </div>
     );

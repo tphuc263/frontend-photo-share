@@ -1,21 +1,44 @@
-import { useUser } from '../../context/UserContext';
-import { Navigate } from 'react-router-dom';
+// src/context/UserContext.jsx
+import { createContext, useContext, useState, useEffect } from 'react';
 
-/**
- * PrivateRoute component to protect routes requiring authentication
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components to render if authenticated
- */
-function PrivateRoute({ children }) {
-    const { isAuthenticated } = useUser();
+const UserContext = createContext({
+    user: null,
+    isAuthenticated: false,
+    setUser: () => {},
+    setIsAuthenticated: () => {},
+    logout: () => {}
+});
 
-    if (!isAuthenticated) {
-        // Redirect to login if not authenticated
-        return <Navigate to="/login" replace />;
-    }
+export const useUser = () => useContext(UserContext);
 
-    // Render children if authenticated
-    return children;
-}
+export const UserProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-export default PrivateRoute;
+    // Kiểm tra xem có token không khi khởi động ứng dụng
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+            // Có thể thực hiện gọi API để lấy thông tin người dùng ở đây
+        }
+    }, []);
+
+    const logout = () => {
+        setUser(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem('token');
+    };
+
+    const value = {
+        user,
+        isAuthenticated,
+        setUser,
+        setIsAuthenticated,
+        logout
+    };
+
+    return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
+
+export default UserContext;
