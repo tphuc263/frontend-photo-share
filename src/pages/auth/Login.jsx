@@ -1,27 +1,53 @@
+/**
+ * LOGIN COMPONENT - UI LAYER
+ * Purpose: Handle login form UI and user interactions
+ * Responsibilities:
+ * - Render login form
+ * - Handle form input changes
+ * - Manage local form state and validation
+ * - Handle form submission
+ * - Display errors and loading states
+ * - Navigation after successful login
+ * - No business logic or API calls
+ */
+
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
 const Login = () => {
+    // Local form state
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
-    const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
 
-    const { login } = useAuth()
+    // Local UI state
+    const [errors, setErrors] = useState({})        // Form validation errors
+    const [showPassword, setShowPassword] = useState(false)  // Password visibility toggle
+
+    // Get auth context and navigation
+    const { login, loading, validateCredentials } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
-    // Handle input changes
+    // Get redirect path from navigation state (used by ProtectedRoute)
+    const from = location.state?.from?.pathname || '/'
+
+    /**
+     * Handle input field changes
+     * @param {Event} e - Input change event
+     */
     const handleChange = (e) => {
         const { name, value } = e.target
+
+        // Update form data
         setFormData(prev => ({
             ...prev,
             [name]: value
         }))
 
-        // Clear error when user starts typing
+        // Clear error for this field when user starts typing
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -30,91 +56,173 @@ const Login = () => {
         }
     }
 
-    // Validate form
+    /**
+     * Validate form using business logic validation
+     * @returns {boolean} True if form is valid
+     */
     const validateForm = () => {
-        const newErrors = {}
+        const validation = validateCredentials(formData)
 
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required'
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Email is invalid'
+        if (!validation.isValid) {
+            setErrors(validation.errors)
+            return false
         }
 
-        if (!formData.password) {
-            newErrors.password = 'Password is required'
-        } else if (formData.password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters'
-        }
-
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
+        // Clear any existing errors
+        setErrors({})
+        return true
     }
 
-    // Handle form submission
+    /**
+     * Handle form submission
+     * @param {Event} e - Form submit event
+     */
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!validateForm()) return
-
-        setLoading(true)
+        // Step 1: Validate form data
+        if (!validateForm()) {
+            return
+        }
 
         try {
+            // Step 2: Attempt login using auth context
             const result = await login(formData)
 
+            // Step 3: Handle login result
             if (result.success) {
-                navigate('/', { replace: true })
+                // Login successful - navigate to intended page
+                console.log('Login successful, navigating to:', from)
+                navigate(from, { replace: true })
             } else {
-                setErrors({ submit: result.error })
+                // Login failed - show error message
+                setErrors({
+                    submit: result.error || 'Login failed. Please try again.'
+                })
             }
         } catch (error) {
-            setErrors({ submit: 'An unexpected error occurred' })
-        } finally {
-            setLoading(false)
+            // Handle unexpected errors
+            console.error('Login submission error:', error)
+            setErrors({
+                submit: 'An unexpected error occurred. Please try again.'
+            })
+        }
+    }
+
+    /**
+     * Handle password visibility toggle
+     */
+    const togglePasswordVisibility = () => {
+        setShowPassword(prev => !prev)
+    }
+
+    /**
+     * Handle demo login (for development/testing)
+     */
+    const handleDemoLogin = async () => {
+        const demoCredentials = {
+            email: 'demo@example.com',
+            password: 'demo123'
+        }
+
+        setFormData(demoCredentials)
+
+        // Simulate form submission with demo data
+        const result = await login(demoCredentials)
+
+        if (result.success) {
+            navigate(from, { replace: true })
+        } else {
+            setErrors({
+                submit: 'Demo login failed. Please use manual login.'
+            })
         }
     }
 
     return (
         <div className="auth-container">
             <div className="auth-card">
+                {/* Header Section */}
                 <div className="auth-header">
                     <h1>ShareApp</h1>
                     <p>Sign in to your account</p>
+
+                    {/* Show success message if redirected from registration */}
+                    {location.state?.message && (
+                        <div className="success-message">
+                            {location.state.message}
+                        </div>
+                    )}
                 </div>
 
-                <form onSubmit={handleSubmit} className="auth-form">
-                    {/* Email Field */}
+                {/* Login Form */}
+                <form onSubmit={handleSubmit} className="auth-form" noValidate>
+
+                    {/* Email Input Field */}
                     <div className="form-group">
+                        <label htmlFor="email" className="form-label">
+                            Email Address
+                        </label>
                         <input
+                            id="email"
                             type="email"
                             name="email"
-                            placeholder="Email"
+                            placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
-                            className={errors.email ? 'error' : ''}
+                            className={`form-input ${errors.email ? 'error' : ''}`}
+                            disabled={loading}
+                            autoComplete="email"
+                            required
                         />
+                        {/* Show email validation error */}
                         {errors.email && (
-                            <span className="error-message">{errors.email}</span>
+                            <span className="error-message" role="alert">
+                                {errors.email}
+                            </span>
                         )}
                     </div>
 
-                    {/* Password Field */}
+                    {/* Password Input Field */}
                     <div className="form-group">
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className={errors.password ? 'error' : ''}
-                        />
+                        <label htmlFor="password" className="form-label">
+                            Password
+                        </label>
+                        <div className="password-input-wrapper">
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                placeholder="Enter your password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className={`form-input ${errors.password ? 'error' : ''}`}
+                                disabled={loading}
+                                autoComplete="current-password"
+                                required
+                            />
+                            {/* Password visibility toggle button */}
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={togglePasswordVisibility}
+                                disabled={loading}
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showPassword ? '🙈' : '👁️'}
+                            </button>
+                        </div>
+                        {/* Show password validation error */}
                         {errors.password && (
-                            <span className="error-message">{errors.password}</span>
+                            <span className="error-message" role="alert">
+                                {errors.password}
+                            </span>
                         )}
                     </div>
 
-                    {/* Submit Error */}
+                    {/* Form submission error */}
                     {errors.submit && (
-                        <div className="error-message submit-error">
+                        <div className="error-message submit-error" role="alert">
                             {errors.submit}
                         </div>
                     )}
@@ -124,16 +232,54 @@ const Login = () => {
                         type="submit"
                         disabled={loading}
                         className="submit-btn"
+                        aria-describedby={loading ? 'loading-text' : undefined}
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? (
+                            <>
+                                <span className="loading-spinner">⏳</span>
+                                <span id="loading-text">Signing in...</span>
+                            </>
+                        ) : (
+                            'Sign In'
+                        )}
                     </button>
+
+                    {/* Demo Login Button (Development only) */}
+                    {process.env.NODE_ENV === 'development' && (
+                        <button
+                            type="button"
+                            onClick={handleDemoLogin}
+                            disabled={loading}
+                            className="demo-btn"
+                        >
+                            Demo Login
+                        </button>
+                    )}
                 </form>
 
-                {/* Register Link */}
+                {/* Footer Links */}
                 <div className="auth-footer">
+                    {/* Registration link */}
                     <p>
                         Don't have an account?{' '}
-                        <Link to="/register">Sign up</Link>
+                        <Link
+                            to="/register"
+                            className="auth-link"
+                            tabIndex={loading ? -1 : 0}
+                        >
+                            Sign up
+                        </Link>
+                    </p>
+
+                    {/* Forgot password link (placeholder) */}
+                    <p>
+                        <Link
+                            to="/forgot-password"
+                            className="auth-link"
+                            tabIndex={loading ? -1 : 0}
+                        >
+                            Forgot your password?
+                        </Link>
                     </p>
                 </div>
             </div>

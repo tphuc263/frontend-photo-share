@@ -1,29 +1,52 @@
+/**
+ * REGISTER COMPONENT - UI LAYER
+ * Purpose: Handle registration form UI and user interactions
+ * Responsibilities:
+ * - Render registration form with all required fields
+ * - Handle form input changes and validation
+ * - Manage local form state
+ * - Handle form submission
+ * - Display errors and success states
+ * - Navigation after successful registration
+ * - No business logic or API calls
+ */
+
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
 const Register = () => {
+    // Local form state
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
     })
-    const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
 
-    const { register } = useAuth()
+    // Local UI state
+    const [errors, setErrors] = useState({})           // Form validation errors
+    const [showPassword, setShowPassword] = useState(false)      // Password visibility
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)  // Confirm password visibility
+
+    // Get auth context and navigation
+    const { register, loading, validateRegistration } = useAuth()
     const navigate = useNavigate()
 
-    // Handle input changes
+    /**
+     * Handle input field changes
+     * @param {Event} e - Input change event
+     */
     const handleChange = (e) => {
         const { name, value } = e.target
+
+        // Update form data
         setFormData(prev => ({
             ...prev,
             [name]: value
         }))
 
-        // Clear error when user starts typing
+        // Clear error for this field when user starts typing
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -32,146 +55,283 @@ const Register = () => {
         }
     }
 
-    // Validate form
+    /**
+     * Validate form using business logic validation
+     * @returns {boolean} True if form is valid
+     */
     const validateForm = () => {
-        const newErrors = {}
+        const validation = validateRegistration(formData)
 
-        // Username validation
-        if (!formData.username.trim()) {
-            newErrors.username = 'Username is required'
-        } else if (formData.username.length < 3) {
-            newErrors.username = 'Username must be at least 3 characters'
-        } else if (!/^[a-zA-Z0-9._]+$/.test(formData.username)) {
-            newErrors.username = 'Username can only contain letters, numbers, dots and underscores'
+        if (!validation.isValid) {
+            setErrors(validation.errors)
+            return false
         }
 
-        // Email validation
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required'
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Email is invalid'
-        }
-
-        // Password validation
-        if (!formData.password) {
-            newErrors.password = 'Password is required'
-        } else if (formData.password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters'
-        }
-
-        // Confirm password validation
-        if (!formData.confirmPassword) {
-            newErrors.confirmPassword = 'Please confirm your password'
-        } else if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match'
-        }
-
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
+        // Clear any existing errors
+        setErrors({})
+        return true
     }
 
-    // Handle form submission
+    /**
+     * Handle form submission
+     * @param {Event} e - Form submit event
+     */
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!validateForm()) return
-
-        setLoading(true)
+        // Step 1: Validate form data
+        if (!validateForm()) {
+            return
+        }
 
         try {
-            // Remove confirmPassword before sending to API
+            // Step 2: Prepare registration data (remove confirmPassword)
             const { confirmPassword, ...registrationData } = formData
 
+            // Step 3: Attempt registration using auth context
             const result = await register(registrationData)
 
+            // Step 4: Handle registration result
             if (result.success) {
-                // Redirect to login page after successful registration
+                // Registration successful - navigate to login with success message
+                console.log('Registration successful')
                 navigate('/login', {
                     replace: true,
-                    state: { message: 'Registration successful! Please sign in.' }
+                    state: {
+                        message: 'Registration successful! Please sign in with your new account.'
+                    }
                 })
             } else {
-                setErrors({ submit: result.error })
+                // Registration failed - show error message
+                setErrors({
+                    submit: result.error || 'Registration failed. Please try again.'
+                })
             }
         } catch (error) {
-            setErrors({ submit: 'An unexpected error occurred' })
-        } finally {
-            setLoading(false)
+            // Handle unexpected errors
+            console.error('Registration submission error:', error)
+            setErrors({
+                submit: 'An unexpected error occurred. Please try again.'
+            })
         }
     }
+
+    /**
+     * Handle password visibility toggle
+     */
+    const togglePasswordVisibility = () => {
+        setShowPassword(prev => !prev)
+    }
+
+    /**
+     * Handle confirm password visibility toggle
+     */
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(prev => !prev)
+    }
+
+    /**
+     * Check password strength and return indicator
+     * @param {string} password - Password to check
+     * @returns {Object} Password strength info
+     */
+    const getPasswordStrength = (password) => {
+        if (!password) return { strength: 'none', text: '', color: '' }
+
+        if (password.length < 6) {
+            return { strength: 'weak', text: 'Too short', color: '#ff4757' }
+        } else if (password.length < 8) {
+            return { strength: 'fair', text: 'Fair', color: '#ffa502' }
+        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+            return { strength: 'good', text: 'Good', color: '#3742fa' }
+        } else {
+            return { strength: 'strong', text: 'Strong', color: '#2ed573' }
+        }
+    }
+
+    const passwordStrength = getPasswordStrength(formData.password)
 
     return (
         <div className="auth-container">
             <div className="auth-card">
+                {/* Header Section */}
                 <div className="auth-header">
                     <h1>ShareApp</h1>
                     <p>Create your account</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="auth-form">
-                    {/* Username Field */}
+                {/* Registration Form */}
+                <form onSubmit={handleSubmit} className="auth-form" noValidate>
+
+                    {/* Username Input Field */}
                     <div className="form-group">
+                        <label htmlFor="username" className="form-label">
+                            Username
+                        </label>
                         <input
+                            id="username"
                             type="text"
                             name="username"
-                            placeholder="Username"
+                            placeholder="Choose a username"
                             value={formData.username}
                             onChange={handleChange}
-                            className={errors.username ? 'error' : ''}
+                            className={`form-input ${errors.username ? 'error' : ''}`}
+                            disabled={loading}
+                            autoComplete="username"
+                            required
                         />
+                        {/* Username validation error */}
                         {errors.username && (
-                            <span className="error-message">{errors.username}</span>
+                            <span className="error-message" role="alert">
+                                {errors.username}
+                            </span>
+                        )}
+                        {/* Username requirements hint */}
+                        {!errors.username && formData.username && (
+                            <span className="help-text">
+                                3+ characters, letters, numbers, dots and underscores only
+                            </span>
                         )}
                     </div>
 
-                    {/* Email Field */}
+                    {/* Email Input Field */}
                     <div className="form-group">
+                        <label htmlFor="email" className="form-label">
+                            Email Address
+                        </label>
                         <input
+                            id="email"
                             type="email"
                             name="email"
-                            placeholder="Email"
+                            placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
-                            className={errors.email ? 'error' : ''}
+                            className={`form-input ${errors.email ? 'error' : ''}`}
+                            disabled={loading}
+                            autoComplete="email"
+                            required
                         />
+                        {/* Email validation error */}
                         {errors.email && (
-                            <span className="error-message">{errors.email}</span>
+                            <span className="error-message" role="alert">
+                                {errors.email}
+                            </span>
                         )}
                     </div>
 
-                    {/* Password Field */}
+                    {/* Password Input Field */}
                     <div className="form-group">
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className={errors.password ? 'error' : ''}
-                        />
+                        <label htmlFor="password" className="form-label">
+                            Password
+                        </label>
+                        <div className="password-input-wrapper">
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                placeholder="Create a password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className={`form-input ${errors.password ? 'error' : ''}`}
+                                disabled={loading}
+                                autoComplete="new-password"
+                                required
+                            />
+                            {/* Password visibility toggle */}
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={togglePasswordVisibility}
+                                disabled={loading}
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showPassword ? '🙈' : '👁️'}
+                            </button>
+                        </div>
+
+                        {/* Password validation error */}
                         {errors.password && (
-                            <span className="error-message">{errors.password}</span>
+                            <span className="error-message" role="alert">
+                                {errors.password}
+                            </span>
+                        )}
+
+                        {/* Password strength indicator */}
+                        {!errors.password && formData.password && (
+                            <div className="password-strength">
+                                <span
+                                    className="strength-text"
+                                    style={{ color: passwordStrength.color }}
+                                >
+                                    Password strength: {passwordStrength.text}
+                                </span>
+                                <div className="strength-bar">
+                                    <div
+                                        className={`strength-fill strength-${passwordStrength.strength}`}
+                                        style={{ backgroundColor: passwordStrength.color }}
+                                    ></div>
+                                </div>
+                            </div>
                         )}
                     </div>
 
-                    {/* Confirm Password Field */}
+                    {/* Confirm Password Input Field */}
                     <div className="form-group">
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            placeholder="Confirm Password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className={errors.confirmPassword ? 'error' : ''}
-                        />
+                        <label htmlFor="confirmPassword" className="form-label">
+                            Confirm Password
+                        </label>
+                        <div className="password-input-wrapper">
+                            <input
+                                id="confirmPassword"
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                name="confirmPassword"
+                                placeholder="Confirm your password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
+                                disabled={loading}
+                                autoComplete="new-password"
+                                required
+                            />
+                            {/* Confirm password visibility toggle */}
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={toggleConfirmPasswordVisibility}
+                                disabled={loading}
+                                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showConfirmPassword ? '🙈' : '👁️'}
+                            </button>
+                        </div>
+
+                        {/* Confirm password validation error */}
                         {errors.confirmPassword && (
-                            <span className="error-message">{errors.confirmPassword}</span>
+                            <span className="error-message" role="alert">
+                                {errors.confirmPassword}
+                            </span>
+                        )}
+
+                        {/* Password match indicator */}
+                        {!errors.confirmPassword && formData.confirmPassword && formData.password && (
+                            <span
+                                className={`help-text ${
+                                    formData.password === formData.confirmPassword
+                                        ? 'success-text'
+                                        : 'warning-text'
+                                }`}
+                            >
+                                {formData.password === formData.confirmPassword
+                                    ? '✓ Passwords match'
+                                    : '⚠ Passwords do not match'
+                                }
+                            </span>
                         )}
                     </div>
 
-                    {/* Submit Error */}
+                    {/* Form submission error */}
                     {errors.submit && (
-                        <div className="error-message submit-error">
+                        <div className="error-message submit-error" role="alert">
                             {errors.submit}
                         </div>
                     )}
@@ -181,16 +341,39 @@ const Register = () => {
                         type="submit"
                         disabled={loading}
                         className="submit-btn"
+                        aria-describedby={loading ? 'loading-text' : undefined}
                     >
-                        {loading ? 'Creating Account...' : 'Sign Up'}
+                        {loading ? (
+                            <>
+                                <span className="loading-spinner">⏳</span>
+                                <span id="loading-text">Creating Account...</span>
+                            </>
+                        ) : (
+                            'Create Account'
+                        )}
                     </button>
                 </form>
 
-                {/* Login Link */}
+                {/* Footer Links */}
                 <div className="auth-footer">
+                    {/* Login link */}
                     <p>
                         Already have an account?{' '}
-                        <Link to="/login">Sign in</Link>
+                        <Link
+                            to="/login"
+                            className="auth-link"
+                            tabIndex={loading ? -1 : 0}
+                        >
+                            Sign in
+                        </Link>
+                    </p>
+
+                    {/* Terms and privacy (placeholder) */}
+                    <p className="terms-text">
+                        By creating an account, you agree to our{' '}
+                        <Link to="/terms" className="auth-link">Terms of Service</Link>
+                        {' '}and{' '}
+                        <Link to="/privacy" className="auth-link">Privacy Policy</Link>
                     </p>
                 </div>
             </div>

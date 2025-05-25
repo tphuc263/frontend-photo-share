@@ -1,18 +1,27 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import {
+    Home,
+    Search,
+    Compass,
+    MessageCircle,
+    Heart,
+    PlusSquare,
+    User
+} from 'lucide-react'
 
 const SideBar = () => {
     const { user, logout, isAuthenticated } = useAuth()
 
     // Navigation items for authenticated users
     const navItems = [
-        { path: '/', label: 'Home', icon: '🏠' },
-        { path: '/search', label: 'Search', icon: '🔍' },
-        { path: '/explore', label: 'Explore', icon: '🧭' },
-        { path: '/messages', label: 'Messages', icon: '💬' },
-        { path: '/notifications', label: 'Notifications', icon: '🔔' },
-        { path: '/create', label: 'Create', icon: '➕' },
-        { path: '/profile', label: 'Profile', icon: '👤' },
+        { path: '/', label: 'Home', icon: <Home size={20} /> },
+        { path: '/search', label: 'Search', icon: <Search size={20} /> },
+        { path: '/explore', label: 'Explore', icon: <Compass size={20} /> },
+        { path: '/messages', label: 'Messages', icon: <MessageCircle size={20} /> },
+        { path: '/notifications', label: 'Notifications', icon: <Heart size={20} /> },
+        { path: '/create', label: 'Create', icon: <PlusSquare size={20} /> },
+        { path: '/profile', label: 'Profile', icon: <User size={20} /> },
     ]
 
     // Handle logout

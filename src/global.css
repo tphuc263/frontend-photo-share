@@ -1,1 +1,585 @@
+/* ===================================
+   RESET AND BASE STYLES
+   ================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+/* ===================================
+   LOADING AND LAYOUT COMPONENTS
+   ================================== */
+
+/* Loading screen for app initialization */
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 18px;
+    background-color: #fff;
+}
+
+/* Main app layout with sidebar */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Auth layout for login/register pages */
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* ===================================
+   SIDEBAR NAVIGATION STYLES
+   ================================== */
+
+/* Main sidebar container */
+.sidebar {
+    width: 250px;
+    background: white;
+    border-right: 1px solid #e1e8ed;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* App brand/logo in sidebar */
+.sidebar-brand h2 {
+    color: #1da1f2;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Navigation container */
+.sidebar-nav {
+    flex: 1;
+}
+
+/* Individual navigation items */
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 25px;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+    color: #1da1f2;
+}
+
+.nav-item.active {
+    background-color: #1da1f2;
+    color: white;
+}
+
+/* Navigation icons */
+.nav-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-label {
+    font-weight: 500;
+}
+
+/* Sidebar footer with user info */
+.sidebar-footer {
+    border-top: 1px solid #e1e8ed;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.user-avatar {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.username {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Logout button */
+.logout-btn {
+    width: 100%;
+    padding: 10px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+.logout-btn:hover {
+    background: #ff3838;
+    transform: translateY(-1px);
+}
+
+/* ===================================
+   MAIN CONTENT AREA
+   ================================== */
+
+/* Main content container */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
+
+/* ===================================
+   AUTHENTICATION FORM STYLES
+   ================================== */
+
+/* Auth container wrapper */
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+/* Auth card container */
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Auth header section */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h1 {
+    color: #1da1f2;
+    font-size: 32px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.auth-header p {
+    color: #657786;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
+}
+
+/* ===================================
+   FORM COMPONENTS
+   ================================== */
+
+/* Main form container */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form group container */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Form labels */
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Form input fields */
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #1da1f2;
+    box-shadow: 0 0 0 3px rgba(29, 161, 242, 0.1);
+}
+
+.form-input.error {
+    border-color: #e0245e;
+    background-color: #fdf2f2;
+}
+
+.form-input:disabled {
+    background-color: #f7f9fa;
+    cursor: not-allowed;
+}
+
+/* ===================================
+   PASSWORD INPUT COMPONENTS
+   ================================== */
+
+/* Password input wrapper */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .form-input {
+    padding-right: 45px;
+}
+
+/* Password visibility toggle button */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.password-toggle:hover {
+    background-color: #f7f9fa;
+}
+
+.password-toggle:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ===================================
+   PASSWORD STRENGTH INDICATOR
+   ================================== */
+
+/* Password strength container */
+.password-strength {
+    margin-top: 8px;
+}
+
+.strength-text {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Password strength bar */
+.strength-bar {
+    height: 4px;
+    background-color: #e1e8ed;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-fill.strength-weak {
+    width: 25%;
+}
+
+.strength-fill.strength-fair {
+    width: 50%;
+}
+
+.strength-fill.strength-good {
+    width: 75%;
+}
+
+.strength-fill.strength-strong {
+    width: 100%;
+}
+
+/* ===================================
+   HELP TEXT AND MESSAGES
+   ================================== */
+
+/* General help text */
+.help-text {
+    font-size: 12px;
+    color: #657786;
+    margin-top: 4px;
+    display: block;
+}
+
+.success-text {
+    color: #17bf63;
+}
+
+.warning-text {
+    color: #ffad1f;
+}
+
+/* Error messages */
+.error-message {
+    color: #e0245e;
+    font-size: 14px;
+    margin-top: 6px;
+    display: block;
+    font-weight: 500;
+}
+
+.submit-error {
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 12px;
+    background-color: #fdf2f2;
+    border-radius: 8px;
+    border: 1px solid #e0245e;
+}
+
+/* ===================================
+   BUTTONS
+   ================================== */
+
+/* Primary submit button */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(45deg, #1da1f2, #1991db);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: linear-gradient(45deg, #1991db, #1885d1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+}
+
+.submit-btn:disabled {
+    background: #ccd6dd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Demo button (development only) */
+.demo-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f7f9fa;
+    color: #657786;
+    border: 2px solid #e1e8ed;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+.demo-btn:hover:not(:disabled) {
+    background: #e1e8ed;
+    color: #333;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===================================
+   AUTH FOOTER
+   ================================== */
+
+/* Footer section */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e8ed;
+}
+
+.auth-footer p {
+    margin-bottom: 10px;
+    color: #657786;
+}
+
+/* Auth links */
+.auth-link {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+    color: #1991db;
+    text-decoration: underline;
+}
+
+/* Terms text */
+.terms-text {
+    font-size: 12px;
+    color: #657786;
+    line-height: 1.4;
+}
+
+/* ===================================
+   HOME PAGE STYLES
+   ================================== */
+
+/* Home page container */
+.home-page {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.home-page h1 {
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 700;
+}
+
+/* Posts feed container */
+.posts-feed {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e8ed;
+}
+
+.post-placeholder {
+    text-align: center;
+    color: #657786;
+    padding: 40px;
+    font-size: 16px;
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   ================================== */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 15px;
+        order: 2;
+    }
+
+    .main-content {
+        padding: 15px;
+        order: 1;
+    }
+
+    .nav-item {
+        justify-content: center;
+        margin-bottom: 8px;
+    }
+
+    .nav-label {
+        display: none;
+    }
+
+    .auth-card {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+
+    .auth-header h1 {
+        font-size: 28px;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 10px;
+    }
+
+    .auth-card {
+        padding: 25px 15px;
+    }
+
+    .form-input {
+        padding: 12px 14px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
