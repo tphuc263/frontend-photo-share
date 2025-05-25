@@ -1,11 +1,9 @@
-
-import { useState } from 'react'
+import Login from "./pages/auth/Login.jsx"
 
 function App() {
     return (
         <div className="App">
-            <h1>ShareApp</h1>
-            <p>Welcome to Photo Sharing App</p>
+            <Login />
         </div>
     )
 }
