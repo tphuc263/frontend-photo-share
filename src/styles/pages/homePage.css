@@ -1,0 +1,63 @@
+/* Home Page */
+.home-page {
+    max-width: 470px;
+    margin: 0 auto;
+    padding: var(--ig-spacing-md) 0;
+}
+
+.welcome-header {
+    margin-bottom: var(--ig-spacing-xl);
+    text-align: center;
+    padding: var(--ig-spacing-lg) 0;
+}
+
+.posts-feed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-xl);
+}
+
+.post-container {
+    background: var(--ig-surface);
+    border: 1px solid var(--ig-border-color);
+    border-radius: var(--ig-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--ig-shadow-sm);
+    transition: box-shadow 0.2s ease;
+}
+
+.post-container:hover {
+    box-shadow: var(--ig-shadow-md);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: var(--ig-spacing-md);
+    gap: var(--ig-spacing-sm);
+    background: var(--ig-surface);
+}
+
+.post-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.post-actions {
+    padding: var(--ig-spacing-md);
+    background: var(--ig-surface);
+}
+
+/* Placeholder Pages */
+.page-placeholder {
+    text-align: center;
+    color: var(--ig-secondary-text);
+    padding: var(--ig-spacing-xl);
+    background: var(--ig-surface);
+    border: 1px solid var(--ig-border-color);
+    border-radius: var(--ig-radius-lg);
+    box-shadow: var(--ig-shadow-sm);
+}

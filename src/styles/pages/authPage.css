@@ -1,0 +1,44 @@
+/* Authentication Pages */
+.auth-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.auth-card {
+    background: var(--ig-surface);
+    padding: var(--ig-spacing-xl);
+    border: 1px solid var(--ig-border-color);
+    border-radius: var(--ig-radius-sm);
+    box-shadow: var(--ig-shadow-sm);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: var(--ig-spacing-xl);
+}
+
+.auth-header h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--ig-font-size-2xl);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: var(--ig-spacing-sm);
+    background: var(--ig-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-sm);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: var(--ig-spacing-lg);
+    padding-top: var(--ig-spacing-lg);
+    border-top: 1px solid var(--ig-border-color);
+}

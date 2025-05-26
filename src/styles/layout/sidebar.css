@@ -1,0 +1,90 @@
+.sidebar {
+    width: 244px;
+    background: var(--ig-surface);
+    border-right: 1px solid var(--ig-border-color);
+    padding: var(--ig-spacing-lg) var(--ig-spacing-md);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-brand {
+    padding: var(--ig-spacing-lg) var(--ig-spacing-md);
+    margin-bottom: var(--ig-spacing-xl);
+}
+
+.sidebar-brand h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--ig-font-size-xl);
+    font-weight: 700;
+    color: var(--ig-primary-text);
+    letter-spacing: -0.5px;
+    background: var(--ig-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: var(--ig-spacing-md);
+    text-decoration: none;
+    color: var(--ig-primary-text);
+    border-radius: var(--ig-radius-lg);
+    margin-bottom: var(--ig-spacing-xs);
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-weight: 400;
+    font-size: var(--ig-font-size-base);
+    position: relative;
+}
+
+.nav-item:hover {
+    background-color: var(--ig-hover-background);
+    transform: translateX(2px);
+}
+
+.nav-item.active {
+    font-weight: 600;
+    color: var(--ig-primary-text);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 24px;
+    background: var(--ig-gradient);
+    border-radius: 2px;
+}
+
+.nav-icon {
+    margin-right: var(--ig-spacing-md);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-label {
+    font-size: var(--ig-font-size-base);
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--ig-border-color);
+    padding-top: var(--ig-spacing-lg);
+    margin-top: var(--ig-spacing-lg);
+}
