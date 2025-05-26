@@ -14,6 +14,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { Eye, EyeOff } from 'lucide-react';
 
 const Register = () => {
     // Local form state
@@ -157,7 +158,6 @@ const Register = () => {
                 {/* Header Section */}
                 <div className="auth-header">
                     <h1>ShareApp</h1>
-                    <p>Create your account</p>
                 </div>
 
                 {/* Registration Form */}
@@ -245,7 +245,7 @@ const Register = () => {
                                 disabled={loading}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? '🙈' : '👁️'}
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
                         </div>
 
@@ -301,7 +301,7 @@ const Register = () => {
                                 disabled={loading}
                                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showConfirmPassword ? '🙈' : '👁️'}
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
                         </div>
 

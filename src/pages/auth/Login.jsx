@@ -14,6 +14,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
     // Local form state
@@ -116,37 +117,12 @@ const Login = () => {
         setShowPassword(prev => !prev)
     }
 
-    /**
-     * Handle demo login (for development/testing)
-     */
-    const handleDemoLogin = async () => {
-        const demoCredentials = {
-            email: 'demo@example.com',
-            password: 'demo123'
-        }
-
-        setFormData(demoCredentials)
-
-        // Simulate form submission with demo data
-        const result = await login(demoCredentials)
-
-        if (result.success) {
-            navigate(from, { replace: true })
-        } else {
-            setErrors({
-                submit: 'Demo login failed. Please use manual login.'
-            })
-        }
-    }
-
     return (
         <div className="auth-container">
             <div className="auth-card">
                 {/* Header Section */}
                 <div className="auth-header">
                     <h1>ShareApp</h1>
-                    <p>Sign in to your account</p>
-
                     {/* Show success message if redirected from registration */}
                     {location.state?.message && (
                         <div className="success-message">
@@ -161,7 +137,7 @@ const Login = () => {
                     {/* Email Input Field */}
                     <div className="form-group">
                         <label htmlFor="email" className="form-label">
-                            Email Address
+                            Email
                         </label>
                         <input
                             id="email"
@@ -209,7 +185,7 @@ const Login = () => {
                                 disabled={loading}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? '🙈' : '👁️'}
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                             </button>
                         </div>
                         {/* Show password validation error */}
@@ -243,18 +219,6 @@ const Login = () => {
                             'Sign In'
                         )}
                     </button>
-
-                    {/* Demo Login Button (Development only) */}
-                    {process.env.NODE_ENV === 'development' && (
-                        <button
-                            type="button"
-                            onClick={handleDemoLogin}
-                            disabled={loading}
-                            className="demo-btn"
-                        >
-                            Demo Login
-                        </button>
-                    )}
                 </form>
 
                 {/* Footer Links */}
