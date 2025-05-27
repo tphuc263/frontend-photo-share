@@ -1,0 +1,111 @@
+/* ===================================
+   AVATAR COMPONENT STYLES
+   ================================== */
+
+.avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ig-radius-full);
+    overflow: hidden;
+    background: var(--ig-gradient);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.avatar-clickable {
+    cursor: pointer;
+}
+
+.avatar-clickable:hover {
+    transform: scale(1.05);
+    box-shadow: var(--ig-shadow-md);
+}
+
+/* Avatar sizes */
+.avatar-sm {
+    width: 24px;
+    height: 24px;
+}
+
+.avatar-md {
+    width: 32px;
+    height: 32px;
+}
+
+.avatar-lg {
+    width: 48px;
+    height: 48px;
+}
+
+.avatar-xl {
+    width: 64px;
+    height: 64px;
+}
+
+/* Avatar image */
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s ease;
+}
+
+.avatar-image.loading {
+    opacity: 0;
+}
+
+/* Avatar fallback */
+.avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ig-gradient);
+    color: white;
+    font-weight: 600;
+    font-size: 0.75em;
+    text-transform: uppercase;
+}
+
+/* Avatar skeleton loader */
+.avatar-skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            90deg,
+            var(--ig-hover-background) 25%,
+            var(--ig-border-color) 50%,
+            var(--ig-hover-background) 75%
+    );
+    background-size: 200% 100%;
+    animation: avatarShimmer 1.5s infinite;
+    border-radius: var(--ig-radius-full);
+}
+
+@keyframes avatarShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Size-specific fallback font sizes */
+.avatar-sm .avatar-fallback {
+    font-size: 10px;
+}
+
+.avatar-md .avatar-fallback {
+    font-size: 12px;
+}
+
+.avatar-lg .avatar-fallback {
+    font-size: 16px;
+}
+
+.avatar-xl .avatar-fallback {
+    font-size: 20px;
+}

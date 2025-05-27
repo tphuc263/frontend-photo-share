@@ -1,223 +1,231 @@
 /**
- * HOME COMPONENT - CLEAN ARCHITECTURE
- * Purpose: Display main feed with posts
+ * HOME COMPONENT - UPDATED WITH PHOTOCARD INTEGRATION
+ * Purpose: Display main feed with photo cards
  * Responsibilities:
- * - Render feed layout and welcome section
- * - Manage feed-level state (posts, pagination)
- * - Handle post interactions via callbacks
- * - Coordinate between Post components and data layer
- * - No direct post rendering logic
+ * - Load newsfeed from backend
+ * - Handle photo interactions
+ * - Manage pagination and loading states
+ * - Coordinate between PhotoCard and services
  */
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import Post from '../components/feed/Post'
-import {LoadingSpinner} from '../components/common/LoadingSpinner.jsx'
-import {EmptyState} from '../components/common/EmptyState'
+import PhotoCard from '../components/feed/PhotoCard'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
+import { EmptyState } from '../components/common/EmptyState'
+import { photoService } from '../services/photoService'
+import { commentService } from '../services/commentService'
+import '../styles/pages/homePage.css'
 
 const Home = () => {
     const { user } = useAuth()
 
     // Feed state management
-    const [posts, setPosts] = useState([])
+    const [photos, setPhotos] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true)
-
-    // Mock data for demonstration - will be replaced with API calls
-    const mockPosts = [
-        {
-            id: '1',
-            user: {
-                id: 'user1',
-                username: 'nature_lover',
-                avatar: '🌿'
-            },
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop',
-            caption: 'Beautiful mountain landscape during golden hour 🏔️✨ #nature #mountains #photography',
-            likes: 142,
-            comments: 23,
-            timeAgo: '2h',
-            isLiked: false
-        },
-        {
-            id: '2',
-            user: {
-                id: 'user2',
-                username: 'coffee_addict',
-                avatar: '☕'
-            },
-            image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=600&fit=crop',
-            caption: 'Perfect morning brew ☕ Nothing beats a fresh cup of coffee to start the day!',
-            likes: 89,
-            comments: 12,
-            timeAgo: '4h',
-            isLiked: true
-        },
-        {
-            id: '3',
-            user: {
-                id: 'user3',
-                username: 'travel_diaries',
-                avatar: '✈️'
-            },
-            image: 'https://images.unsplash.com/photo-1549388604-817d15aa0110?w=600&h=600&fit=crop',
-            caption: 'Exploring the ancient streets of this beautiful city 🏛️ Every corner tells a story #travel #architecture',
-            likes: 256,
-            comments: 41,
-            timeAgo: '6h',
-            isLiked: false
-        }
-    ]
+    const [loadingMore, setLoadingMore] = useState(false)
 
     /**
-     * Initialize feed data
-     * In real app, this would call API
+     * Load initial newsfeed
      */
     useEffect(() => {
-        const loadFeed = async () => {
-            try {
-                setLoading(true)
-                // TODO: Replace with real API call
-                // const feedData = await feedService.getFeed()
-
-                // Simulate API delay
-                await new Promise(resolve => setTimeout(resolve, 1000))
-                setPosts(mockPosts)
-
-            } catch (err) {
-                setError('Failed to load feed')
-                console.error('Feed loading error:', err)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        loadFeed()
+        loadNewsfeed()
     }, [])
 
     /**
-     * Handle post like/unlike
-     * @param {string} postId - ID of post to like
+     * Load newsfeed from backend
      */
-    const handlePostLike = async (postId) => {
+    const loadNewsfeed = async (pageNum = 0, reset = true) => {
+        try {
+            if (reset) {
+                setLoading(true)
+                setError(null)
+            } else {
+                setLoadingMore(true)
+            }
+
+            const response = await photoService.getNewsfeed(pageNum, 20)
+
+            if (response.success) {
+                const newPhotos = response.data.content || []
+
+                if (reset) {
+                    setPhotos(newPhotos)
+                } else {
+                    setPhotos(prev => [...prev, ...newPhotos])
+                }
+
+                setHasMore(!response.data.last)
+                setPage(pageNum)
+            } else {
+                throw new Error(response.error)
+            }
+
+        } catch (err) {
+            console.error('Failed to load newsfeed:', err)
+            setError('Failed to load feed. Please try again.')
+        } finally {
+            setLoading(false)
+            setLoadingMore(false)
+        }
+    }
+
+    /**
+     * Handle photo like/unlike
+     */
+    const handlePhotoLike = async (photoId) => {
         try {
             // Optimistic update
-            setPosts(prevPosts =>
-                prevPosts.map(post => {
-                    if (post.id === postId) {
+            setPhotos(prevPhotos =>
+                prevPhotos.map(photo => {
+                    if (photo.id === photoId) {
                         return {
-                            ...post,
-                            isLiked: !post.isLiked,
-                            likes: post.isLiked ? post.likes - 1 : post.likes + 1
+                            ...photo,
+                            isLikedByCurrentUser: !photo.isLikedByCurrentUser,
+                            likesCount: photo.isLikedByCurrentUser
+                                ? photo.likesCount - 1
+                                : photo.likesCount + 1
                         }
                     }
-                    return post
+                    return photo
                 })
             )
 
-            // TODO: Call API
-            // await postService.toggleLike(postId)
-            console.log('Like toggled for post:', postId)
+            // Call API
+            const response = await photoService.toggleLike(photoId)
 
-        } catch (error) {
-            // Revert optimistic update on error
-            setPosts(prevPosts =>
-                prevPosts.map(post => {
-                    if (post.id === postId) {
-                        return {
-                            ...post,
-                            isLiked: !post.isLiked,
-                            likes: post.isLiked ? post.likes + 1 : post.likes - 1
+            if (!response.success) {
+                // Revert optimistic update on error
+                setPhotos(prevPhotos =>
+                    prevPhotos.map(photo => {
+                        if (photo.id === photoId) {
+                            return {
+                                ...photo,
+                                isLikedByCurrentUser: !photo.isLikedByCurrentUser,
+                                likesCount: photo.isLikedByCurrentUser
+                                    ? photo.likesCount + 1
+                                    : photo.likesCount - 1
+                            }
                         }
-                    }
-                    return post
-                })
-            )
-            console.error('Failed to toggle like:', error)
-        }
-    }
-
-    /**
-     * Handle post comment
-     * @param {string} postId - ID of post to comment on
-     * @param {string} commentText - Comment text
-     */
-    const handlePostComment = async (postId, commentText) => {
-        try {
-            // TODO: Call API to add comment
-            // await postService.addComment(postId, commentText)
-            console.log('Comment added to post:', postId, 'Text:', commentText)
-
-            // Update comments count optimistically
-            setPosts(prevPosts =>
-                prevPosts.map(post => {
-                    if (post.id === postId) {
-                        return {
-                            ...post,
-                            comments: post.comments + 1
-                        }
-                    }
-                    return post
-                })
-            )
-
-        } catch (error) {
-            console.error('Failed to add comment:', error)
-        }
-    }
-
-    /**
-     * Handle post share
-     * @param {string} postId - ID of post to share
-     */
-    const handlePostShare = async (postId) => {
-        try {
-            // TODO: Implement share functionality
-            console.log('Sharing post:', postId)
-
-            // Could open share modal, copy link, etc.
-            if (navigator.share) {
-                await navigator.share({
-                    title: 'Check out this post on ShareApp',
-                    url: `${window.location.origin}/post/${postId}`
-                })
-            } else {
-                // Fallback: copy to clipboard
-                await navigator.clipboard.writeText(`${window.location.origin}/post/${postId}`)
-                // Show toast notification
+                        return photo
+                    })
+                )
+                console.error('Failed to toggle like:', response.error)
             }
 
         } catch (error) {
-            console.error('Failed to share post:', error)
+            console.error('Failed to toggle like:', error)
+            // Revert optimistic update
+            setPhotos(prevPhotos =>
+                prevPhotos.map(photo => {
+                    if (photo.id === photoId) {
+                        return {
+                            ...photo,
+                            isLikedByCurrentUser: !photo.isLikedByCurrentUser,
+                            likesCount: photo.isLikedByCurrentUser
+                                ? photo.likesCount + 1
+                                : photo.likesCount - 1
+                        }
+                    }
+                    return photo
+                })
+            )
         }
     }
 
     /**
-     * Handle post save/bookmark
-     * @param {string} postId - ID of post to save
+     * Handle photo comment
      */
-    const handlePostSave = async (postId) => {
+    const handlePhotoComment = async (photoId, commentText) => {
         try {
-            // TODO: Call API to save post
-            // await postService.toggleSave(postId)
-            console.log('Post saved:', postId)
+            const response = await commentService.createComment(photoId, {
+                text: commentText
+            })
+
+            if (response.success) {
+                // Update comments count
+                setPhotos(prevPhotos =>
+                    prevPhotos.map(photo => {
+                        if (photo.id === photoId) {
+                            return {
+                                ...photo,
+                                commentsCount: photo.commentsCount + 1
+                            }
+                        }
+                        return photo
+                    })
+                )
+                return true
+            } else {
+                console.error('Failed to add comment:', response.error)
+                return false
+            }
 
         } catch (error) {
-            console.error('Failed to save post:', error)
+            console.error('Failed to add comment:', error)
+            return false
         }
     }
 
     /**
-     * Load more posts (pagination)
+     * Handle photo share
      */
-    const handleLoadMore = async () => {
+    const handlePhotoShare = async (photoId) => {
         try {
-            // TODO: Implement pagination
-            console.log('Loading more posts...')
+            const photo = photos.find(p => p.id === photoId)
+            if (!photo) return
+
+            const shareData = {
+                title: `Check out this photo by ${photo.username}`,
+                text: photo.caption || 'Check out this amazing photo!',
+                url: `${window.location.origin}/photo/${photoId}`
+            }
+
+            if (navigator.share) {
+                await navigator.share(shareData)
+            } else {
+                // Fallback: copy to clipboard
+                await navigator.clipboard.writeText(shareData.url)
+                // TODO: Show toast notification
+                console.log('Link copied to clipboard!')
+            }
+
         } catch (error) {
-            console.error('Failed to load more posts:', error)
+            console.error('Failed to share photo:', error)
         }
+    }
+
+    /**
+     * Handle photo save/bookmark
+     */
+    const handlePhotoSave = async (photoId) => {
+        try {
+            // TODO: Implement save functionality when backend is ready
+            console.log('Save photo:', photoId)
+            // Could call bookmarkService.toggleBookmark(photoId)
+        } catch (error) {
+            console.error('Failed to save photo:', error)
+        }
+    }
+
+    /**
+     * Handle load more photos
+     */
+    const handleLoadMore = () => {
+        if (!loadingMore && hasMore) {
+            loadNewsfeed(page + 1, false)
+        }
+    }
+
+    /**
+     * Handle refresh feed
+     */
+    const handleRefresh = () => {
+        setPage(0)
+        loadNewsfeed(0, true)
     }
 
     /**
@@ -226,7 +234,7 @@ const Home = () => {
     if (loading) {
         return (
             <div className="home-page">
-                <LoadingSpinner message="Loading your feed..." />
+                <LoadingSpinner message="Loading your newsfeed..." />
             </div>
         )
     }
@@ -241,7 +249,7 @@ const Home = () => {
                     <h3>Unable to load feed</h3>
                     <p>{error}</p>
                     <button
-                        onClick={() => window.location.reload()}
+                        onClick={handleRefresh}
                         className="retry-btn"
                     >
                         Try again
@@ -254,17 +262,22 @@ const Home = () => {
     return (
         <div className="home-page">
             {/* Welcome Header */}
-            <WelcomeHeader username={user?.username} />
+            <WelcomeHeader
+                username={user?.username}
+                onRefresh={handleRefresh}
+            />
 
-            {/* Posts Feed */}
-            <FeedContainer
-                posts={posts}
-                onLike={handlePostLike}
-                onComment={handlePostComment}
-                onShare={handlePostShare}
-                onSave={handlePostSave}
+            {/* Photos Feed */}
+            <PhotosFeed
+                photos={photos}
+                onLike={handlePhotoLike}
+                onComment={handlePhotoComment}
+                onShare={handlePhotoShare}
+                onSave={handlePhotoSave}
                 hasMore={hasMore}
+                loadingMore={loadingMore}
                 onLoadMore={handleLoadMore}
+                currentUser={user}
             />
         </div>
     )
@@ -273,52 +286,85 @@ const Home = () => {
 /**
  * Welcome Header Sub-component
  */
-const WelcomeHeader = ({ username }) => (
+const WelcomeHeader = ({ username, onRefresh }) => (
     <div className="welcome-header">
         <h1>Welcome back, {username}!</h1>
         <p>Stay connected with your friends and discover amazing content</p>
+        <button
+            onClick={onRefresh}
+            className="refresh-btn"
+            aria-label="Refresh feed"
+        >
+            🔄 Refresh
+        </button>
     </div>
 )
 
 /**
- * Feed Container Sub-component
+ * Photos Feed Sub-component
  */
-const FeedContainer = ({ posts, onLike, onComment, onShare, onSave, hasMore, onLoadMore }) => {
-    if (posts.length === 0) {
+const PhotosFeed = ({
+                        photos,
+                        onLike,
+                        onComment,
+                        onShare,
+                        onSave,
+                        hasMore,
+                        loadingMore,
+                        onLoadMore,
+                        currentUser
+                    }) => {
+    if (photos.length === 0) {
         return (
             <EmptyState
-                title="No posts yet"
-                description="Start following people to see their posts in your feed!"
+                title="No photos in your feed"
+                description="Start following people to see their photos here!"
                 actionText="Explore ShareApp"
                 onAction={() => console.log('Navigate to explore')}
+                icon="📷"
             />
         )
     }
 
     return (
         <>
-            <div className="posts-feed">
-                {posts.map(post => (
-                    <Post
-                        key={post.id}
-                        post={post}
+            <div className="photos-feed">
+                {photos.map(photo => (
+                    <PhotoCard
+                        key={photo.id}
+                        photo={photo}
                         onLike={onLike}
                         onComment={onComment}
                         onShare={onShare}
                         onSave={onSave}
+                        currentUser={currentUser}
                     />
                 ))}
             </div>
 
-            {/* Load More Button */}
+            {/* Load More Section */}
             {hasMore && (
                 <div className="load-more-container">
-                    <button
-                        onClick={onLoadMore}
-                        className="load-more-btn"
-                    >
-                        Load more posts
-                    </button>
+                    {loadingMore ? (
+                        <LoadingSpinner
+                            size="small"
+                            message="Loading more photos..."
+                        />
+                    ) : (
+                        <button
+                            onClick={onLoadMore}
+                            className="load-more-btn"
+                        >
+                            Load more photos
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {/* End of feed message */}
+            {!hasMore && photos.length > 0 && (
+                <div className="end-of-feed">
+                    <p>You're all caught up! 🎉</p>
                 </div>
             )}
         </>
