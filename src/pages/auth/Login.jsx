@@ -15,6 +15,8 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { Eye, EyeOff } from 'lucide-react';
+import '../../styles/pages/authPage.css'
+
 
 const Login = () => {
     // Local form state

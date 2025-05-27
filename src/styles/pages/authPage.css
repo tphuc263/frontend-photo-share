@@ -1,10 +1,15 @@
-/* Authentication Pages */
+/* ===================================
+   AUTHENTICATION FORM STYLES
+   ================================== */
+
+/* Auth container wrapper */
 .auth-container {
     width: 100%;
-    max-width: 350px;
+    max-width: 350px; /* Instagram's login form width */
     margin: 0 auto;
 }
 
+/* Auth card container - Instagram's clean design */
 .auth-card {
     background: var(--ig-surface);
     padding: var(--ig-spacing-xl);
@@ -13,12 +18,14 @@
     box-shadow: var(--ig-shadow-sm);
 }
 
+/* Auth header section */
 .auth-header {
     text-align: center;
     margin-bottom: var(--ig-spacing-xl);
 }
 
 .auth-header h1 {
+    /* ShareApp title with Instagram's gradient */
     font-family: 'Inter', sans-serif;
     font-size: var(--ig-font-size-2xl);
     font-weight: 700;
@@ -30,15 +37,52 @@
     background-clip: text;
 }
 
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ig-spacing-sm);
+.auth-header p {
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-base);
+    font-weight: 400;
 }
 
-.auth-footer {
+/* Success message styling */
+.success-message {
+    background-color: #d4edda;
+    color: var(--ig-success-color);
+    padding: var(--ig-spacing-md);
+    border-radius: var(--ig-radius-md);
+    margin-bottom: var(--ig-spacing-md);
+    border: 1px solid rgba(0, 186, 124, 0.2);
     text-align: center;
-    margin-top: var(--ig-spacing-lg);
-    padding-top: var(--ig-spacing-lg);
-    border-top: 1px solid var(--ig-border-color);
+    font-size: var(--ig-font-size-sm);
+}
+
+/* ===================================
+   PASSWORD INPUT COMPONENTS
+   ================================== */
+
+/* Password input wrapper */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .form-input {
+    padding-right: 40px;
+}
+
+/* Password visibility toggle button */
+.password-toggle {
+    position: absolute;
+    right: var(--ig-spacing-md);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--ig-spacing-xs);
+    border-radius: var(--ig-radius-sm);
+    transition: background-color 0.2s ease;
+    color: var(--ig-secondary-text);
+}
+
+.password-toggle:hover {
+    background-color: var(--ig-hover-background);
 }

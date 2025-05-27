@@ -1,22 +1,31 @@
 /**
- * HOME COMPONENT - INSTAGRAM-STYLE FEED
- * Purpose: Display main feed with photo posts similar to Instagram
- * Key Design Elements:
- * - Clean, minimal layout matching Instagram's aesthetic
- * - Square aspect ratio images (1:1)
- * - Consistent spacing and typography
- * - Interactive elements (like, comment, share)
+ * HOME COMPONENT - CLEAN ARCHITECTURE
+ * Purpose: Display main feed with posts
+ * Responsibilities:
+ * - Render feed layout and welcome section
+ * - Manage feed-level state (posts, pagination)
+ * - Handle post interactions via callbacks
+ * - Coordinate between Post components and data layer
+ * - No direct post rendering logic
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal } from 'lucide-react'
+import Post from '../components/feed/Post'
+import {LoadingSpinner} from '../components/common/LoadingSpinner.jsx'
+import {EmptyState} from '../components/common/EmptyState'
 
 const Home = () => {
     const { user } = useAuth()
 
-    // Mock data for demonstration - will be replaced with real API data
-    const [posts] = useState([
+    // Feed state management
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [hasMore, setHasMore] = useState(true)
+
+    // Mock data for demonstration - will be replaced with API calls
+    const mockPosts = [
         {
             id: '1',
             user: {
@@ -59,223 +68,260 @@ const Home = () => {
             timeAgo: '6h',
             isLiked: false
         }
-    ])
+    ]
 
-    // State for managing post interactions
-    const [postStates, setPostStates] = useState(
-        posts.reduce((acc, post) => ({
-            ...acc,
-            [post.id]: {
-                isLiked: post.isLiked,
-                likesCount: post.likes,
-                showComments: false
+    /**
+     * Initialize feed data
+     * In real app, this would call API
+     */
+    useEffect(() => {
+        const loadFeed = async () => {
+            try {
+                setLoading(true)
+                // TODO: Replace with real API call
+                // const feedData = await feedService.getFeed()
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1000))
+                setPosts(mockPosts)
+
+            } catch (err) {
+                setError('Failed to load feed')
+                console.error('Feed loading error:', err)
+            } finally {
+                setLoading(false)
             }
-        }), {})
-    )
+        }
+
+        loadFeed()
+    }, [])
 
     /**
-     * Handle like/unlike functionality
-     * In real app, this would make API call to backend
+     * Handle post like/unlike
+     * @param {string} postId - ID of post to like
      */
-    const handleLike = (postId) => {
-        setPostStates(prev => ({
-            ...prev,
-            [postId]: {
-                ...prev[postId],
-                isLiked: !prev[postId].isLiked,
-                likesCount: prev[postId].isLiked
-                    ? prev[postId].likesCount - 1
-                    : prev[postId].likesCount + 1
+    const handlePostLike = async (postId) => {
+        try {
+            // Optimistic update
+            setPosts(prevPosts =>
+                prevPosts.map(post => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            isLiked: !post.isLiked,
+                            likes: post.isLiked ? post.likes - 1 : post.likes + 1
+                        }
+                    }
+                    return post
+                })
+            )
+
+            // TODO: Call API
+            // await postService.toggleLike(postId)
+            console.log('Like toggled for post:', postId)
+
+        } catch (error) {
+            // Revert optimistic update on error
+            setPosts(prevPosts =>
+                prevPosts.map(post => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            isLiked: !post.isLiked,
+                            likes: post.isLiked ? post.likes + 1 : post.likes - 1
+                        }
+                    }
+                    return post
+                })
+            )
+            console.error('Failed to toggle like:', error)
+        }
+    }
+
+    /**
+     * Handle post comment
+     * @param {string} postId - ID of post to comment on
+     * @param {string} commentText - Comment text
+     */
+    const handlePostComment = async (postId, commentText) => {
+        try {
+            // TODO: Call API to add comment
+            // await postService.addComment(postId, commentText)
+            console.log('Comment added to post:', postId, 'Text:', commentText)
+
+            // Update comments count optimistically
+            setPosts(prevPosts =>
+                prevPosts.map(post => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            comments: post.comments + 1
+                        }
+                    }
+                    return post
+                })
+            )
+
+        } catch (error) {
+            console.error('Failed to add comment:', error)
+        }
+    }
+
+    /**
+     * Handle post share
+     * @param {string} postId - ID of post to share
+     */
+    const handlePostShare = async (postId) => {
+        try {
+            // TODO: Implement share functionality
+            console.log('Sharing post:', postId)
+
+            // Could open share modal, copy link, etc.
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Check out this post on ShareApp',
+                    url: `${window.location.origin}/post/${postId}`
+                })
+            } else {
+                // Fallback: copy to clipboard
+                await navigator.clipboard.writeText(`${window.location.origin}/post/${postId}`)
+                // Show toast notification
             }
-        }))
+
+        } catch (error) {
+            console.error('Failed to share post:', error)
+        }
     }
 
     /**
-     * Handle comment section toggle
+     * Handle post save/bookmark
+     * @param {string} postId - ID of post to save
      */
-    const handleCommentToggle = (postId) => {
-        setPostStates(prev => ({
-            ...prev,
-            [postId]: {
-                ...prev[postId],
-                showComments: !prev[postId].showComments
-            }
-        }))
+    const handlePostSave = async (postId) => {
+        try {
+            // TODO: Call API to save post
+            // await postService.toggleSave(postId)
+            console.log('Post saved:', postId)
+
+        } catch (error) {
+            console.error('Failed to save post:', error)
+        }
     }
 
     /**
-     * Handle share functionality (placeholder)
+     * Load more posts (pagination)
      */
-    const handleShare = (postId) => {
-        // In real app, this would open share modal
-        console.log('Sharing post:', postId)
+    const handleLoadMore = async () => {
+        try {
+            // TODO: Implement pagination
+            console.log('Loading more posts...')
+        } catch (error) {
+            console.error('Failed to load more posts:', error)
+        }
     }
 
     /**
-     * Handle save/bookmark functionality (placeholder)
+     * Render loading state
      */
-    const handleSave = (postId) => {
-        // In real app, this would save post to user's saved collection
-        console.log('Saving post:', postId)
-    }
-
-    /**
-     * Render individual post component
-     */
-    const PostComponent = ({ post }) => {
-        const postState = postStates[post.id]
-
+    if (loading) {
         return (
-            <article className="post-container">
-                {/* Post Header - User info and menu */}
-                <header className="post-header">
-                    <div className="post-avatar">
-                        {post.user.avatar}
-                    </div>
-                    <div className="post-user-info">
-                        <div className="post-username">{post.user.username}</div>
-                        <div className="post-time">{post.timeAgo}</div>
-                    </div>
-                    <button className="action-btn" aria-label="More options">
-                        <MoreHorizontal size={20} />
+            <div className="home-page">
+                <LoadingSpinner message="Loading your feed..." />
+            </div>
+        )
+    }
+
+    /**
+     * Render error state
+     */
+    if (error) {
+        return (
+            <div className="home-page">
+                <div className="error-state">
+                    <h3>Unable to load feed</h3>
+                    <p>{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="retry-btn"
+                    >
+                        Try again
                     </button>
-                </header>
-
-                {/* Post Image - Square aspect ratio like Instagram */}
-                <div className="post-image-container">
-                    <img
-                        src={post.image}
-                        alt="Post content"
-                        className="post-image"
-                        loading="lazy"
-                    />
                 </div>
-
-                {/* Post Actions - Like, Comment, Share, Save */}
-                <div className="post-actions">
-                    <div className="action-buttons">
-                        <button
-                            className={`action-btn ${postState.isLiked ? 'liked' : ''}`}
-                            onClick={() => handleLike(post.id)}
-                            aria-label={postState.isLiked ? 'Unlike' : 'Like'}
-                        >
-                            <Heart
-                                size={24}
-                                fill={postState.isLiked ? 'currentColor' : 'none'}
-                            />
-                        </button>
-
-                        <button
-                            className="action-btn"
-                            onClick={() => handleCommentToggle(post.id)}
-                            aria-label="Comment"
-                        >
-                            <MessageCircle size={24} />
-                        </button>
-
-                        <button
-                            className="action-btn"
-                            onClick={() => handleShare(post.id)}
-                            aria-label="Share"
-                        >
-                            <Send size={24} />
-                        </button>
-
-                        <button
-                            className="action-btn"
-                            onClick={() => handleSave(post.id)}
-                            aria-label="Save"
-                            style={{ marginLeft: 'auto' }}
-                        >
-                            <Bookmark size={24} />
-                        </button>
-                    </div>
-
-                    {/* Post Stats - Likes and Comments count */}
-                    <div className="post-stats">
-                        <strong>{postState.likesCount.toLocaleString()} likes</strong>
-                    </div>
-
-                    {/* Post Caption */}
-                    <div className="post-caption">
-                        <span className="username">{post.user.username}</span>
-                        {post.caption}
-                    </div>
-
-                    {/* Comments Section (expandable) */}
-                    {post.comments > 0 && (
-                        <button
-                            className="view-comments-btn"
-                            onClick={() => handleCommentToggle(post.id)}
-                        >
-                            View all {post.comments} comments
-                        </button>
-                    )}
-
-                    {/* Comments Container (hidden by default) */}
-                    {postState.showComments && (
-                        <div className="comments-section">
-                            {/* Mock comments - will be replaced with real data */}
-                            <div className="comment">
-                                <span className="comment-username">john_doe</span>
-                                <span className="comment-text">Amazing shot! 📸</span>
-                            </div>
-                            <div className="comment">
-                                <span className="comment-username">photo_enthusiast</span>
-                                <span className="comment-text">Love the composition and lighting!</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Add Comment Input */}
-                    <div className="add-comment">
-                        <input
-                            type="text"
-                            placeholder="Add a comment..."
-                            className="comment-input"
-                        />
-                        <button className="post-comment-btn">Post</button>
-                    </div>
-                </div>
-            </article>
+            </div>
         )
     }
 
     return (
         <div className="home-page">
             {/* Welcome Header */}
-            <div className="welcome-header">
-                <h1>Welcome back, {user?.username}!</h1>
-                <p>Stay connected with your friends and discover amazing content</p>
-            </div>
+            <WelcomeHeader username={user?.username} />
 
             {/* Posts Feed */}
+            <FeedContainer
+                posts={posts}
+                onLike={handlePostLike}
+                onComment={handlePostComment}
+                onShare={handlePostShare}
+                onSave={handlePostSave}
+                hasMore={hasMore}
+                onLoadMore={handleLoadMore}
+            />
+        </div>
+    )
+}
+
+/**
+ * Welcome Header Sub-component
+ */
+const WelcomeHeader = ({ username }) => (
+    <div className="welcome-header">
+        <h1>Welcome back, {username}!</h1>
+        <p>Stay connected with your friends and discover amazing content</p>
+    </div>
+)
+
+/**
+ * Feed Container Sub-component
+ */
+const FeedContainer = ({ posts, onLike, onComment, onShare, onSave, hasMore, onLoadMore }) => {
+    if (posts.length === 0) {
+        return (
+            <EmptyState
+                title="No posts yet"
+                description="Start following people to see their posts in your feed!"
+                actionText="Explore ShareApp"
+                onAction={() => console.log('Navigate to explore')}
+            />
+        )
+    }
+
+    return (
+        <>
             <div className="posts-feed">
-                {posts.length > 0 ? (
-                    posts.map(post => (
-                        <PostComponent key={post.id} post={post} />
-                    ))
-                ) : (
-                    /* Empty State */
-                    <div className="post-placeholder">
-                        <h3>No posts yet</h3>
-                        <p>Start following people to see their posts in your feed!</p>
-                        <button className="explore-btn">
-                            Explore ShareApp
-                        </button>
-                    </div>
-                )}
+                {posts.map(post => (
+                    <Post
+                        key={post.id}
+                        post={post}
+                        onLike={onLike}
+                        onComment={onComment}
+                        onShare={onShare}
+                        onSave={onSave}
+                    />
+                ))}
             </div>
 
             {/* Load More Button */}
-            {posts.length > 0 && (
+            {hasMore && (
                 <div className="load-more-container">
-                    <button className="load-more-btn">
+                    <button
+                        onClick={onLoadMore}
+                        className="load-more-btn"
+                    >
                         Load more posts
                     </button>
                 </div>
             )}
-        </div>
+        </>
     )
 }
 

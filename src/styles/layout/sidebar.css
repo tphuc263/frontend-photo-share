@@ -88,3 +88,51 @@
     padding-top: var(--ig-spacing-lg);
     margin-top: var(--ig-spacing-lg);
 }
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--ig-spacing-md);
+    padding: var(--ig-spacing-sm);
+    background-color: var(--ig-hover-background);
+    border-radius: var(--ig-radius-md);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: var(--ig-spacing-sm);
+    background: var(--ig-gradient);
+    border-radius: var(--ig-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: var(--ig-font-size-sm);
+    font-weight: 600;
+}
+
+.username {
+    font-weight: 600;
+    color: var(--ig-primary-text);
+    font-size: var(--ig-font-size-sm);
+}
+
+/* Logout button - Instagram style */
+.logout-btn {
+    width: 100%;
+    padding: var(--ig-spacing-sm) var(--ig-spacing-md);
+    background: var(--ig-button-secondary);
+    color: var(--ig-primary-text);
+    border: 1px solid var(--ig-border-color);
+    border-radius: var(--ig-radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: var(--ig-font-size-sm);
+    font-family: inherit;
+}
+
+.logout-btn:hover {
+    background: var(--ig-border-color);
+}

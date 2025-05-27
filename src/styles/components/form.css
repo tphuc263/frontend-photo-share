@@ -1,4 +1,12 @@
 /* Form Components */
+
+/* Main form container */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-sm);
+}
+
 .form-group {
     margin-bottom: var(--ig-spacing-md);
 }
