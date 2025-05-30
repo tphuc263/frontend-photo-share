@@ -1,8 +1,8 @@
-import {useAuth} from '../../context/AuthContext'
+import {useAuthContext} from '../../context/AuthContext'
 import SideBar from './SideBar'
 
 const Layout = ({children}) => {
-    const {isAuthenticated, loading} = useAuth()
+    const {isAuthenticated, loading} = useAuthContext()
 
     // Show loading state
     if (loading) {

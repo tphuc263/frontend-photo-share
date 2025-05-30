@@ -13,7 +13,7 @@
 
 import {useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
-import {useAuth} from '../../context/AuthContext'
+import {useAuthContext} from '../../context/AuthContext'
 import {Eye, EyeOff} from 'lucide-react';
 import '../../assets/styles/pages/authPage.css'
 
@@ -30,7 +30,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false)  // Password visibility toggle
 
     // Get auth context and navigation
-    const {login, loading, validateCredentials} = useAuth()
+    const {login, loading, validateCredentials} = useAuthContext()
     const navigate = useNavigate()
     const location = useLocation()
 

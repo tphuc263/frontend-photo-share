@@ -1,9 +1,9 @@
 import {NavLink} from 'react-router-dom'
-import {useAuth} from '../../context/AuthContext'
+import {useAuthContext} from '../../context/AuthContext'
 import {Compass, Heart, Home, MessageCircle, PlusSquare, Search, User} from 'lucide-react'
 
 const SideBar = () => {
-    const {user, logout, isAuthenticated} = useAuth()
+    const {user, logout, isAuthenticated} = useAuthContext()
 
     // Navigation items for authenticated users
     const navItems = [

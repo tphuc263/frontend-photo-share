@@ -13,7 +13,7 @@
 
 import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import {useAuth} from '../../context/AuthContext'
+import {useAuthContext} from '../../context/AuthContext'
 import {Eye, EyeOff} from 'lucide-react';
 import '../../assets/styles/pages/authPage.css'
 
@@ -33,7 +33,7 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)  // Confirm password visibility
 
     // Get auth context and navigation
-    const {register, loading, validateRegistration} = useAuth()
+    const {register, loading, validateRegistration} = useAuthContext()
     const navigate = useNavigate()
 
     /**
