@@ -1,8 +1,8 @@
-import { useAuth } from '../../context/AuthContext'
+import {useAuth} from '../../context/AuthContext'
 import SideBar from './SideBar'
 
-const Layout = ({ children }) => {
-    const { isAuthenticated, loading } = useAuth()
+const Layout = ({children}) => {
+    const {isAuthenticated, loading} = useAuth()
 
     // Show loading state
     if (loading) {
@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
     if (isAuthenticated) {
         return (
             <div className="app-layout">
-                <SideBar />
+                <SideBar/>
                 <main className="main-content">
                     {children}
                 </main>

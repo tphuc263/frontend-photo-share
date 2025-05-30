@@ -7,9 +7,9 @@
  * - Display relative time format
  */
 
-import { Link } from 'react-router-dom'
-import { MoreHorizontal } from 'lucide-react'
-import { formatRelativeTime } from '../../../utils/helpers.js'
+import {Link} from 'react-router-dom'
+import {MoreHorizontal} from 'lucide-react'
+import {formatRelativeTime} from '../../../utils/helpers.js'
 import Avatar from '../../common/Avatar.jsx'
 
 const PhotoHeader = ({
@@ -57,7 +57,7 @@ const PhotoHeader = ({
                 onClick={handleMenuClick}
                 aria-label="More options"
             >
-                <MoreHorizontal size={20} />
+                <MoreHorizontal size={20}/>
             </button>
         </header>
     )

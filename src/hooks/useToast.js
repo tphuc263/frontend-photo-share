@@ -1,12 +1,11 @@
-/**
- * Toast Notification Hook and Component
- */
+import {useState} from 'react'
+
 export const useToast = () => {
     const [toasts, setToasts] = useState([])
 
-    const addToast = (message, type = 'info', duration = 3000) => {
+    const addToast = (message, type = 'info', duration = 2000) => {
         const id = Date.now()
-        const toast = { id, message, type }
+        const toast = {id, message, type}
 
         setToasts(prev => [...prev, toast])
 
@@ -19,5 +18,5 @@ export const useToast = () => {
         setToasts(prev => prev.filter(t => t.id !== id))
     }
 
-    return { toasts, addToast, removeToast }
+    return {toasts, addToast, removeToast}
 }

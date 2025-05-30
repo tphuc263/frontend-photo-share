@@ -11,11 +11,11 @@
  * - No business logic or API calls
  */
 
-import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import { Eye, EyeOff } from 'lucide-react';
-import '../../styles/pages/authPage.css'
+import {useState} from 'react'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
+import {useAuth} from '../../context/AuthContext'
+import {Eye, EyeOff} from 'lucide-react';
+import '../../assets/styles/pages/authPage.css'
 
 
 const Login = () => {
@@ -30,7 +30,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false)  // Password visibility toggle
 
     // Get auth context and navigation
-    const { login, loading, validateCredentials } = useAuth()
+    const {login, loading, validateCredentials} = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -42,7 +42,7 @@ const Login = () => {
      * @param {Event} e - Input change event
      */
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const {name, value} = e.target
 
         // Update form data
         setFormData(prev => ({
@@ -96,7 +96,7 @@ const Login = () => {
             if (result.success) {
                 // Login successful - navigate to intended page
                 console.log('Login successful, navigating to:', from)
-                navigate(from, { replace: true })
+                navigate(from, {replace: true})
             } else {
                 // Login failed - show error message
                 setErrors({
@@ -187,7 +187,7 @@ const Login = () => {
                                 disabled={loading}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPassword ? <EyeOff className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}
                             </button>
                         </div>
                         {/* Show password validation error */}

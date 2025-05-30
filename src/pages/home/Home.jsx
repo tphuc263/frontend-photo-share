@@ -8,17 +8,17 @@
  * - Coordinate between PhotoCard and services
  */
 
-import { useState, useEffect } from 'react'
-import { useAuth } from '../../context/AuthContext.jsx'
+import {useEffect, useState} from 'react'
+import {useAuth} from '../../context/AuthContext.jsx'
 import PhotoCard from '../../components/features/feed/PhotoCard.jsx'
-import { LoadingSpinner } from '../../components/common/LoadingSpinner.jsx'
-import { EmptyState } from '../../components/common/EmptyState.jsx'
-import { photoService } from '../../services/photoService.js'
-import { commentService } from '../../services/commentService.js'
-import '../../styles/pages/homePage.css'
+import {LoadingSpinner} from '../../components/common/LoadingSpinner.jsx'
+import {EmptyState} from '../../components/common/EmptyState.jsx'
+import {photoService} from '../../services/photoService.js'
+import {commentService} from '../../services/commentService.js'
+import '../../assets/styles/pages/homePage.css'
 
 const Home = () => {
-    const { user } = useAuth()
+    const {user} = useAuth()
 
     // Feed state management
     const [photos, setPhotos] = useState([])
@@ -234,7 +234,7 @@ const Home = () => {
     if (loading) {
         return (
             <div className="home-page">
-                <LoadingSpinner message="Loading your newsfeed..." />
+                <LoadingSpinner message="Loading your newsfeed..."/>
             </div>
         )
     }
@@ -286,7 +286,7 @@ const Home = () => {
 /**
  * Welcome Header Sub-component
  */
-const WelcomeHeader = ({ username, onRefresh }) => (
+const WelcomeHeader = ({username, onRefresh}) => (
     <div className="welcome-header">
         <h1>Welcome back, {username}!</h1>
         <p>Stay connected with your friends and discover amazing content</p>

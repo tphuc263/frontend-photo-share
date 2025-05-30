@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import PhotoHeader from './PhotoHeader.jsx'
 import PhotoImage from './PhotoImage.jsx'
 import PhotoActions from './PhotoActions.jsx'
 import PhotoStats from './PhotoStats.jsx'
 import PhotoCaption from './PhotoCaption.jsx'
 import PhotoComments from './PhotoComments.jsx'
-import '../../../styles/components/PhotoCard.css'
+import '../../../assets/styles/components/PhotoCard.css'
 
 const PhotoCard = ({
                        photo,

@@ -1,7 +1,7 @@
 /**
  * Loading Spinner Component
  */
-export const LoadingSpinner = ({ message = 'Loading...', size = 'medium' }) => {
+export const LoadingSpinner = ({message = 'Loading...', size = 'medium'}) => {
     const sizeClasses = {
         small: 'loading-spinner-sm',
         medium: 'loading-spinner-md',

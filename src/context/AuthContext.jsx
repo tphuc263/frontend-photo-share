@@ -9,9 +9,9 @@
  * - No direct API calls or storage operations
  */
 
-import { createContext, useContext, useState, useEffect } from 'react'
-import { StorageService } from '../utils/storage'
-import { useAuthLogic } from '../hooks/useAuthLogic'
+import {createContext, useContext, useEffect, useState} from 'react'
+import {StorageService} from '../utils/storage'
+import {useAuth} from '../hooks/useAuth.js'
 
 // Create authentication context
 const AuthContext = createContext()
@@ -37,7 +37,7 @@ export const useAuth = () => {
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Child components
  */
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
     // Global authentication state
     const [user, setUser] = useState(null)           // Current user data
     const [token, setToken] = useState(null)         // JWT token
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         handleLogout,
         validateCredentials,
         validateRegistration
-    } = useAuthLogic()
+    } = useAuth()
 
     /**
      * Initialize authentication state from storage
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
         const initializeAuth = () => {
             try {
                 // Get stored authentication data
-                const { token: savedToken, user: savedUser } = StorageService.getAuthData()
+                const {token: savedToken, user: savedUser} = StorageService.getAuthData()
 
                 // If both token and user exist, restore session
                 if (savedToken && savedUser) {

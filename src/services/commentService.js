@@ -8,7 +8,7 @@
  * - No business logic or state management
  */
 
-import { apiClient } from './apiService.js'
+import {api} from './api.js'
 
 export class CommentService {
     /**
@@ -18,7 +18,7 @@ export class CommentService {
      */
     async getPhotoComments(photoId) {
         try {
-            const response = await apiClient.get(`/comments/photo/${photoId}`)
+            const response = await api.get(`/comments/photo/${photoId}`)
             return response
         } catch (error) {
             throw new Error(`Failed to load comments: ${error.message}`)
@@ -32,7 +32,7 @@ export class CommentService {
      */
     async getPhotoCommentsCount(photoId) {
         try {
-            const response = await apiClient.get(`/comments/photo/${photoId}/count`)
+            const response = await api.get(`/comments/photo/${photoId}/count`)
             return response
         } catch (error) {
             throw new Error(`Failed to load comments count: ${error.message}`)
@@ -48,7 +48,7 @@ export class CommentService {
      */
     async createComment(photoId, commentData) {
         try {
-            const response = await apiClient.post(`/comments/photo/${photoId}`, commentData)
+            const response = await api.post(`/comments/photo/${photoId}`, commentData)
             return response
         } catch (error) {
             throw new Error(`Failed to create comment: ${error.message}`)
@@ -64,7 +64,7 @@ export class CommentService {
      */
     async updateComment(commentId, commentData) {
         try {
-            const response = await apiClient.put(`/comments/${commentId}`, commentData)
+            const response = await api.put(`/comments/${commentId}`, commentData)
             return response
         } catch (error) {
             throw new Error(`Failed to update comment: ${error.message}`)
@@ -78,7 +78,7 @@ export class CommentService {
      */
     async deleteComment(commentId) {
         try {
-            const response = await apiClient.delete(`/comments/${commentId}`)
+            const response = await api.delete(`/comments/${commentId}`)
             return response
         } catch (error) {
             throw new Error(`Failed to delete comment: ${error.message}`)
@@ -92,7 +92,7 @@ export class CommentService {
      */
     async getComment(commentId) {
         try {
-            const response = await apiClient.get(`/comments/${commentId}`)
+            const response = await api.get(`/comments/${commentId}`)
             return response
         } catch (error) {
             throw new Error(`Failed to load comment: ${error.message}`)

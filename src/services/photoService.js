@@ -8,7 +8,7 @@
  * - Return consistent data format
  */
 
-import {apiClient} from './apiService.js'
+import {api} from './api.js'
 
 export class PhotoService {
     /**
@@ -19,7 +19,7 @@ export class PhotoService {
      */
     async getNewsfeed(page = 0, size = 20) {
         try {
-            return await apiClient.get('/newsfeed', {
+            return await api.get('/newsfeed', {
                 params: {page, size}
             })
         } catch (error) {
@@ -35,7 +35,7 @@ export class PhotoService {
      */
     async getRealtimeNewsfeed(page = 0, size = 20) {
         try {
-            return await apiClient.get('/newsfeed/realtime', {
+            return await api.get('/newsfeed/realtime', {
                 params: {page, size}
             })
         } catch (error) {
@@ -49,7 +49,7 @@ export class PhotoService {
      */
     async refreshNewsfeed() {
         try {
-            return await apiClient.post('/newsfeed/refresh')
+            return await api.post('/newsfeed/refresh')
         } catch (error) {
             throw new Error(`Failed to refresh newsfeed: ${error.message}`)
         }
@@ -63,7 +63,7 @@ export class PhotoService {
      */
     async getAllPhotos(page = 0, size = 20) {
         try {
-            return await apiClient.get('/photos/all', {
+            return await api.get('/photos/all', {
                 params: {page, size}
             })
         } catch (error) {
@@ -80,7 +80,7 @@ export class PhotoService {
      */
     async getUserPhotos(userId, page = 0, size = 20) {
         try {
-            return await apiClient.get(`/photos/user/${userId}`, {
+            return await api.get(`/photos/user/${userId}`, {
                 params: {page, size}
             })
         } catch (error) {
@@ -95,7 +95,7 @@ export class PhotoService {
      */
     async getPhotoById(photoId) {
         try {
-            return await apiClient.get(`/photos/${photoId}`)
+            return await api.get(`/photos/${photoId}`)
         } catch (error) {
             throw new Error(`Failed to load photo: ${error.message}`)
         }
@@ -108,7 +108,7 @@ export class PhotoService {
      */
     async createPhoto(photoData) {
         try {
-            return await apiClient.post('/photos', photoData, {
+            return await api.post('/photos', photoData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -125,7 +125,7 @@ export class PhotoService {
      */
     async deletePhoto(photoId) {
         try {
-            return await apiClient.delete(`/photos/${photoId}`)
+            return await api.delete(`/photos/${photoId}`)
         } catch (error) {
             throw new Error(`Failed to delete photo: ${error.message}`)
         }
@@ -138,7 +138,7 @@ export class PhotoService {
      */
     async toggleLike(photoId) {
         try {
-            return await apiClient.post(`/likes/photo/${photoId}`)
+            return await api.post(`/likes/photo/${photoId}`)
         } catch (error) {
             throw new Error(`Failed to toggle like: ${error.message}`)
         }
@@ -151,7 +151,7 @@ export class PhotoService {
      */
     async getPhotoLikes(photoId) {
         try {
-            return await apiClient.get(`/likes/photo/${photoId}`)
+            return await api.get(`/likes/photo/${photoId}`)
         } catch (error) {
             throw new Error(`Failed to load likes: ${error.message}`)
         }
@@ -164,7 +164,7 @@ export class PhotoService {
      */
     async getPhotoLikesCount(photoId) {
         try {
-            return await apiClient.get(`/likes/photo/${photoId}/count`)
+            return await api.get(`/likes/photo/${photoId}/count`)
         } catch (error) {
             throw new Error(`Failed to load likes count: ${error.message}`)
         }

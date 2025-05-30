@@ -1,27 +1,7 @@
-/**
- * STORAGE SERVICE LAYER
- * Purpose: Handle all browser storage operations
- * Responsibilities:
- * - Store/retrieve auth data from localStorage
- * - Handle storage errors gracefully
- * - Provide consistent storage interface
- * - No business logic or API calls
- */
-
 export class StorageService {
-    // Storage keys - centralized for easy changes
     static AUTH_TOKEN_KEY = 'auth_token'
     static AUTH_USER_KEY = 'auth_user'
 
-    /**
-     * Store authentication data in localStorage
-     * @param {string} token - JWT token
-     * @param {Object} user - User data object
-     * @param {string} user.id - User ID
-     * @param {string} user.username - Username
-     * @param {string} user.email - User email
-     * @param {string} user.role - User role
-     */
     static setAuthData(token, user) {
         try {
             // Store token as string
@@ -54,7 +34,7 @@ export class StorageService {
             const user = userJson ? JSON.parse(userJson) : null
 
             // Return both pieces of data
-            return { token, user }
+            return {token, user}
         } catch (error) {
             // Handle JSON parse errors or localStorage access issues
             console.error('Failed to retrieve auth data:', error)
@@ -62,14 +42,10 @@ export class StorageService {
             // Clear corrupted data
             this.clearAuthData()
 
-            return { token: null, user: null }
+            return {token: null, user: null}
         }
     }
 
-    /**
-     * Remove all authentication data from localStorage
-     * Used for logout or when data is corrupted
-     */
     static clearAuthData() {
         try {
             localStorage.removeItem(this.AUTH_TOKEN_KEY)
@@ -86,7 +62,7 @@ export class StorageService {
      * @returns {boolean} True if both token and user exist
      */
     static hasAuthData() {
-        const { token, user } = this.getAuthData()
+        const {token, user} = this.getAuthData()
         return !!(token && user)
     }
 
@@ -95,7 +71,7 @@ export class StorageService {
      * @returns {string|null} JWT token or null
      */
     static getToken() {
-        const { token } = this.getAuthData()
+        const {token} = this.getAuthData()
         return token
     }
 
@@ -104,7 +80,7 @@ export class StorageService {
      * @returns {Object|null} User object or null
      */
     static getUser() {
-        const { user } = this.getAuthData()
+        const {user} = this.getAuthData()
         return user
     }
 }

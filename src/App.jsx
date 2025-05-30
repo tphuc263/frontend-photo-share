@@ -9,10 +9,10 @@
  * - No business logic or direct component logic
  */
 
-import { Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
+import {Route, Routes} from 'react-router-dom'
+import {AuthProvider} from './context/AuthContext'
 import Layout from './components/layout/Layout'
-import ProtectedRoute, { PublicRoute } from './components/features/auth/ProtectedRoute'
+import ProtectedRoute, {PublicRoute} from './components/features/auth/ProtectedRoute'
 
 // Import page components
 import Login from './pages/auth/Login'
@@ -91,7 +91,7 @@ function App() {
                         path="/login"
                         element={
                             <PublicRoute>
-                                <Login />
+                                <Login/>
                             </PublicRoute>
                         }
                     />
@@ -101,7 +101,7 @@ function App() {
                         path="/register"
                         element={
                             <PublicRoute>
-                                <Register />
+                                <Register/>
                             </PublicRoute>
                         }
                     />
@@ -116,7 +116,7 @@ function App() {
                         path="/"
                         element={
                             <ProtectedRoute>
-                                <Home />
+                                <Home/>
                             </ProtectedRoute>
                         }
                     />
@@ -126,7 +126,7 @@ function App() {
                         path="/search"
                         element={
                             <ProtectedRoute>
-                                <SearchPage />
+                                <SearchPage/>
                             </ProtectedRoute>
                         }
                     />
@@ -136,7 +136,7 @@ function App() {
                         path="/explore"
                         element={
                             <ProtectedRoute>
-                                <ExplorePage />
+                                <ExplorePage/>
                             </ProtectedRoute>
                         }
                     />
@@ -146,7 +146,7 @@ function App() {
                         path="/messages"
                         element={
                             <ProtectedRoute>
-                                <MessagesPage />
+                                <MessagesPage/>
                             </ProtectedRoute>
                         }
                     />
@@ -156,7 +156,7 @@ function App() {
                         path="/notifications"
                         element={
                             <ProtectedRoute>
-                                <NotificationsPage />
+                                <NotificationsPage/>
                             </ProtectedRoute>
                         }
                     />
@@ -166,7 +166,7 @@ function App() {
                         path="/create"
                         element={
                             <ProtectedRoute>
-                                <CreatePage />
+                                <CreatePage/>
                             </ProtectedRoute>
                         }
                     />
@@ -176,7 +176,7 @@ function App() {
                         path="/profile"
                         element={
                             <ProtectedRoute>
-                                <ProfilePage />
+                                <ProfilePage/>
                             </ProtectedRoute>
                         }
                     />
@@ -186,7 +186,7 @@ function App() {
                         path="/profile/:userId"
                         element={
                             <ProtectedRoute>
-                                <ProfilePage />
+                                <ProfilePage/>
                             </ProtectedRoute>
                         }
                     />
@@ -269,7 +269,7 @@ function App() {
                         ================================== */}
                     <Route
                         path="*"
-                        element={<NotFoundPage />}
+                        element={<NotFoundPage/>}
                     />
                 </Routes>
             </Layout>

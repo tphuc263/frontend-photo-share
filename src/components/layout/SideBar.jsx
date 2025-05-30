@@ -1,27 +1,19 @@
-import { NavLink } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import {
-    Home,
-    Search,
-    Compass,
-    MessageCircle,
-    Heart,
-    PlusSquare,
-    User
-} from 'lucide-react'
+import {NavLink} from 'react-router-dom'
+import {useAuth} from '../../context/AuthContext'
+import {Compass, Heart, Home, MessageCircle, PlusSquare, Search, User} from 'lucide-react'
 
 const SideBar = () => {
-    const { user, logout, isAuthenticated } = useAuth()
+    const {user, logout, isAuthenticated} = useAuth()
 
     // Navigation items for authenticated users
     const navItems = [
-        { path: '/', label: 'Home', icon: <Home size={20} /> },
-        { path: '/search', label: 'Search', icon: <Search size={20} /> },
-        { path: '/explore', label: 'Explore', icon: <Compass size={20} /> },
-        { path: '/messages', label: 'Messages', icon: <MessageCircle size={20} /> },
-        { path: '/notifications', label: 'Notifications', icon: <Heart size={20} /> },
-        { path: '/create', label: 'Create', icon: <PlusSquare size={20} /> },
-        { path: '/profile', label: 'Profile', icon: <User size={20} /> },
+        {path: '/', label: 'Home', icon: <Home size={20}/>},
+        {path: '/search', label: 'Search', icon: <Search size={20}/>},
+        {path: '/explore', label: 'Explore', icon: <Compass size={20}/>},
+        {path: '/messages', label: 'Messages', icon: <MessageCircle size={20}/>},
+        {path: '/notifications', label: 'Notifications', icon: <Heart size={20}/>},
+        {path: '/create', label: 'Create', icon: <PlusSquare size={20}/>},
+        {path: '/profile', label: 'Profile', icon: <User size={20}/>},
     ]
 
     // Handle logout
@@ -46,7 +38,7 @@ const SideBar = () => {
                     <NavLink
                         key={item.path}
                         to={item.path}
-                        className={({ isActive }) =>
+                        className={({isActive}) =>
                             `nav-item ${isActive ? 'active' : ''}`
                         }
                     >

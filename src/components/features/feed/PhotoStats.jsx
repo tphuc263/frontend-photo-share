@@ -8,7 +8,7 @@
  * - Handle click interactions
  */
 
-import { formatNumber } from '../../../utils/helpers.js'
+import {formatNumber} from '../../../utils/helpers.js'
 
 const PhotoStats = ({
                         likesCount,

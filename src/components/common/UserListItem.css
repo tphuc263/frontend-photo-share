@@ -1,0 +1,65 @@
+/* src/styles/components/UserListItem.css */
+.user-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ig-spacing-sm);
+    padding: var(--ig-spacing-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--ig-border-color);
+}
+
+.user-list-item:hover {
+    background: var(--ig-hover-background);
+}
+
+.user-list-item:last-child {
+    border-bottom: none;
+}
+
+.user-list-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-list-item-large {
+    padding: var(--ig-spacing-lg) var(--ig-spacing-md);
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.username {
+    font-weight: 600;
+    color: var(--ig-primary-text);
+    font-size: var(--ig-font-size-sm);
+}
+
+.fullname {
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-xs);
+    margin-top: 2px;
+}
+
+.bio {
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-xs);
+    margin-top: 4px;
+    line-height: 1.3;
+}
+
+.followers {
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-xs);
+}
+
+.following-badge {
+    background: var(--ig-button-secondary);
+    color: var(--ig-primary-text);
+    padding: var(--ig-spacing-xs) var(--ig-spacing-sm);
+    border-radius: var(--ig-radius-sm);
+    font-size: var(--ig-font-size-xs);
+    font-weight: 500;
+}

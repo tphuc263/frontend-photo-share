@@ -8,7 +8,7 @@
  * - Optimize button performance
  */
 
-import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
+import {Bookmark, Heart, MessageCircle, Send} from 'lucide-react'
 
 const PhotoActions = ({
                           isLiked,
@@ -50,7 +50,7 @@ const PhotoActions = ({
                     onClick={onComment}
                     aria-label="View comments"
                 >
-                    <MessageCircle size={24} />
+                    <MessageCircle size={24}/>
                 </button>
 
                 {/* Share Button */}
@@ -59,7 +59,7 @@ const PhotoActions = ({
                     onClick={onShare}
                     aria-label="Share photo"
                 >
-                    <Send size={24} />
+                    <Send size={24}/>
                 </button>
 
                 {/* Save Button */}
@@ -68,7 +68,7 @@ const PhotoActions = ({
                     onClick={onSave}
                     aria-label="Save photo"
                 >
-                    <Bookmark size={24} />
+                    <Bookmark size={24}/>
                 </button>
             </div>
         </div>

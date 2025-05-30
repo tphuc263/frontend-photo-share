@@ -8,13 +8,12 @@
  * - Load and display all comments
  */
 
-import { useState, useEffect, useRef } from 'react'
-import { X, Heart, MessageCircle, Send, Bookmark, MoreHorizontal } from 'lucide-react'
+import {useEffect, useRef, useState} from 'react'
+import {Bookmark, Heart, MessageCircle, MoreHorizontal, Send, X} from 'lucide-react'
 import Avatar from '../../common/Avatar.jsx'
-import { commentService } from '../../../services/commentService.js'
-import { photoService } from '../../../services/photoService.js'
-import { formatRelativeTime, formatNumber } from '../../../utils/helpers.js'
-import '../../../styles/components/PhotoCommentsModal.css'
+import {commentService} from '../../../services/commentService.js'
+import {formatNumber, formatRelativeTime} from '../../../utils/helpers.js'
+import '../../../assets/styles/components/PhotoCommentsModal.css'
 
 const PhotoCommentsModal = ({
                                 photo,
@@ -121,7 +120,7 @@ const PhotoCommentsModal = ({
      * Scroll to bottom of comments
      */
     const scrollToBottom = () => {
-        commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+        commentsEndRef.current?.scrollIntoView({behavior: 'smooth'})
     }
 
     /**
@@ -144,7 +143,7 @@ const PhotoCommentsModal = ({
                     onClick={onClose}
                     aria-label="Close comments"
                 >
-                    <X size={24} />
+                    <X size={24}/>
                 </button>
 
                 {/* Left Side - Photo */}
@@ -175,7 +174,7 @@ const PhotoCommentsModal = ({
                             </span>
                         </div>
                         <button className="comments-modal-menu">
-                            <MoreHorizontal size={20} />
+                            <MoreHorizontal size={20}/>
                         </button>
                     </div>
 
@@ -217,7 +216,7 @@ const PhotoCommentsModal = ({
                                         currentUserId={currentUser?.id}
                                     />
                                 ))}
-                                <div ref={commentsEndRef} />
+                                <div ref={commentsEndRef}/>
                             </>
                         )}
                     </div>
@@ -236,13 +235,13 @@ const PhotoCommentsModal = ({
                                 />
                             </button>
                             <button className="action-btn">
-                                <MessageCircle size={24} />
+                                <MessageCircle size={24}/>
                             </button>
                             <button className="action-btn">
-                                <Send size={24} />
+                                <Send size={24}/>
                             </button>
                             <button className="action-btn save-btn">
-                                <Bookmark size={24} />
+                                <Bookmark size={24}/>
                             </button>
                         </div>
 
@@ -282,7 +281,7 @@ const PhotoCommentsModal = ({
 /**
  * Individual Comment Item for Modal
  */
-const CommentItem = ({ comment, currentUserId }) => {
+const CommentItem = ({comment, currentUserId}) => {
     const [showOptions, setShowOptions] = useState(false)
     const [liked, setLiked] = useState(false)
     const isOwner = comment.userId === currentUserId
@@ -345,7 +344,7 @@ const CommentItem = ({ comment, currentUserId }) => {
                 onClick={handleLike}
                 aria-label={liked ? 'Unlike comment' : 'Like comment'}
             >
-                <Heart size={12} fill={liked ? 'currentColor' : 'none'} />
+                <Heart size={12} fill={liked ? 'currentColor' : 'none'}/>
             </button>
         </div>
     )

@@ -1,9 +1,9 @@
 export const ErrorState = ({
-    title = 'Something went wrong',
-    message,
-    onRetry,
-    retryText = 'Try again'
-}) => (
+                               title = 'Something went wrong',
+                               message,
+                               onRetry,
+                               retryText = 'Try again'
+                           }) => (
     <div className="error-state">
         <div className="error-state-icon">❌</div>
         <h3 className="error-state-title">{title}</h3>

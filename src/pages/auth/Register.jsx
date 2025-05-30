@@ -11,11 +11,11 @@
  * - No business logic or API calls
  */
 
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import { Eye, EyeOff } from 'lucide-react';
-import '../../styles/pages/authPage.css'
+import {useState} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import {useAuth} from '../../context/AuthContext'
+import {Eye, EyeOff} from 'lucide-react';
+import '../../assets/styles/pages/authPage.css'
 
 
 const Register = () => {
@@ -33,7 +33,7 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)  // Confirm password visibility
 
     // Get auth context and navigation
-    const { register, loading, validateRegistration } = useAuth()
+    const {register, loading, validateRegistration} = useAuth()
     const navigate = useNavigate()
 
     /**
@@ -41,7 +41,7 @@ const Register = () => {
      * @param {Event} e - Input change event
      */
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const {name, value} = e.target
 
         // Update form data
         setFormData(prev => ({
@@ -89,7 +89,7 @@ const Register = () => {
 
         try {
             // Step 2: Prepare registration data (remove confirmPassword)
-            const { confirmPassword, ...registrationData } = formData
+            const {confirmPassword, ...registrationData} = formData
 
             // Step 3: Attempt registration using auth context
             const result = await register(registrationData)
@@ -139,16 +139,16 @@ const Register = () => {
      * @returns {Object} Password strength info
      */
     const getPasswordStrength = (password) => {
-        if (!password) return { strength: 'none', text: '', color: '' }
+        if (!password) return {strength: 'none', text: '', color: ''}
 
         if (password.length < 6) {
-            return { strength: 'weak', text: 'Too short', color: '#ff4757' }
+            return {strength: 'weak', text: 'Too short', color: '#ff4757'}
         } else if (password.length < 8) {
-            return { strength: 'fair', text: 'Fair', color: '#ffa502' }
+            return {strength: 'fair', text: 'Fair', color: '#ffa502'}
         } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-            return { strength: 'good', text: 'Good', color: '#3742fa' }
+            return {strength: 'good', text: 'Good', color: '#3742fa'}
         } else {
-            return { strength: 'strong', text: 'Strong', color: '#2ed573' }
+            return {strength: 'strong', text: 'Strong', color: '#2ed573'}
         }
     }
 
@@ -247,7 +247,7 @@ const Register = () => {
                                 disabled={loading}
                                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPassword ? <EyeOff className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}
                             </button>
                         </div>
 
@@ -263,14 +263,14 @@ const Register = () => {
                             <div className="password-strength">
                                 <span
                                     className="strength-text"
-                                    style={{ color: passwordStrength.color }}
+                                    style={{color: passwordStrength.color}}
                                 >
                                     Password strength: {passwordStrength.text}
                                 </span>
                                 <div className="strength-bar">
                                     <div
                                         className={`strength-fill strength-${passwordStrength.strength}`}
-                                        style={{ backgroundColor: passwordStrength.color }}
+                                        style={{backgroundColor: passwordStrength.color}}
                                     ></div>
                                 </div>
                             </div>
@@ -303,7 +303,7 @@ const Register = () => {
                                 disabled={loading}
                                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                {showPassword ? <EyeOff className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}
                             </button>
                         </div>
 

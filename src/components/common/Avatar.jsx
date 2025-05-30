@@ -8,8 +8,8 @@
  * - Handle loading states
  */
 
-import { useState } from 'react'
-import '../../styles/layout/Avatar.css'
+import {useState} from 'react'
+import '../../assets/styles/layout/Avatar.css'
 
 const Avatar = ({
                     src,
@@ -61,7 +61,7 @@ const Avatar = ({
         return '?'
     }
 
-    const handleClick = onClick ? { onClick } : {}
+    const handleClick = onClick ? {onClick} : {}
     const cursor = onClick ? 'pointer' : 'default'
 
     const avatarClasses = [
@@ -74,14 +74,14 @@ const Avatar = ({
     return (
         <div
             className={avatarClasses}
-            style={{ cursor }}
+            style={{cursor}}
             {...handleClick}
             {...props}
         >
             {src && !imageError ? (
                 <>
                     {imageLoading && (
-                        <div className="avatar-skeleton" />
+                        <div className="avatar-skeleton"/>
                     )}
                     <img
                         src={src}

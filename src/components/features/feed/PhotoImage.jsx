@@ -8,7 +8,7 @@
  * - Handle image interactions
  */
 
-import { useState } from 'react'
+import {useState} from 'react'
 
 const PhotoImage = ({
                         imageURL,

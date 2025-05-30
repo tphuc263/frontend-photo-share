@@ -8,12 +8,12 @@
  * - Display recent comments inline
  */
 
-import { useState, useEffect } from 'react'
-import { commentService } from '../../../services/commentService.js'
+import {useEffect, useState} from 'react'
+import {commentService} from '../../../services/commentService.js'
 import PhotoCommentsModal from './PhotoCommentsModal.jsx'
 import Avatar from '../../common/Avatar.jsx'
-import { LoadingSpinner } from '../../common/LoadingSpinner.jsx'
-import { formatRelativeTime } from '../../../utils/helpers.js'
+import {LoadingSpinner} from '../../common/LoadingSpinner.jsx'
+import {formatRelativeTime} from '../../../utils/helpers.js'
 
 const PhotoComments = ({
                            photoId,
@@ -128,7 +128,7 @@ const PhotoComments = ({
             <div className="comments-section">
                 {loading ? (
                     <div className="comments-loading">
-                        <LoadingSpinner size="small" message="Loading comments..." />
+                        <LoadingSpinner size="small" message="Loading comments..."/>
                     </div>
                 ) : (
                     <div className="comments-list">
@@ -209,7 +209,7 @@ const PhotoComments = ({
 /**
  * Individual Comment Item Component
  */
-const CommentItem = ({ comment, currentUserId, isInline = false }) => {
+const CommentItem = ({comment, currentUserId, isInline = false}) => {
     const [showOptions, setShowOptions] = useState(false)
     const isOwner = comment.userId === currentUserId
 
