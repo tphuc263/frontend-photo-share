@@ -93,7 +93,7 @@
     100% { background-position: 200% 0; }
 }
 
-/* Size-specific fallback font sizes */
+/* Size-specific fallback fonts sizes */
 .avatar-sm .avatar-fallback {
     font-size: 10px;
 }

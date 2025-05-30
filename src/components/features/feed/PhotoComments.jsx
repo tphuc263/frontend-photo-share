@@ -1,18 +1,19 @@
 /**
- * PHOTO COMMENTS COMPONENT
- * Purpose: Handle comments display and input
+ * UPDATED PHOTO COMMENTS COMPONENT
+ * Purpose: Handle comments display and input with modal integration
  * Responsibilities:
  * - Show comments count and toggle
- * - Display recent comments
+ * - Open comments modal for full view
  * - Handle comment input and submission
- * - Manage comments loading state
+ * - Display recent comments inline
  */
 
 import { useState, useEffect } from 'react'
-import { commentService } from '../../services/commentService'
-import Avatar from '../common/Avatar'
-import {LoadingSpinner} from '../common/LoadingSpinner'
-import { formatRelativeTime } from '../../utils/helpers'
+import { commentService } from '../../../services/commentService.js'
+import PhotoCommentsModal from './PhotoCommentsModal.jsx'
+import Avatar from '../../common/Avatar.jsx'
+import { LoadingSpinner } from '../../common/LoadingSpinner.jsx'
+import { formatRelativeTime } from '../../../utils/helpers.js'
 
 const PhotoComments = ({
                            photoId,
@@ -22,29 +23,34 @@ const PhotoComments = ({
                            commentText,
                            onCommentTextChange,
                            onCommentSubmit,
-                           currentUser
+                           currentUser,
+                           photo,
+                           onLike
                        }) => {
     const [comments, setComments] = useState([])
     const [loading, setLoading] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
     /**
-     * Load comments when section is expanded
+     * Load recent comments when section is expanded
      */
     useEffect(() => {
         if (showComments && comments.length === 0) {
-            loadComments()
+            loadRecentComments()
         }
     }, [showComments, photoId])
 
     /**
-     * Load comments from API
+     * Load recent comments (first 3-5 comments)
      */
-    const loadComments = async () => {
+    const loadRecentComments = async () => {
         try {
             setLoading(true)
             const response = await commentService.getPhotoComments(photoId)
-            setComments(response.data || [])
+            // Show only first 3 comments inline, rest in modal
+            const recentComments = response.data?.slice(0, 3) || []
+            setComments(recentComments)
         } catch (error) {
             console.error('Failed to load comments:', error)
         } finally {
@@ -68,7 +74,7 @@ const PhotoComments = ({
 
             if (response.success) {
                 // Add new comment to local state
-                setComments(prev => [...prev, response.data])
+                setComments(prev => [...prev.slice(-2), response.data])
                 await onCommentSubmit(e)
             }
         } catch (error) {
@@ -76,6 +82,20 @@ const PhotoComments = ({
         } finally {
             setSubmitting(false)
         }
+    }
+
+    /**
+     * Open comments modal
+     */
+    const handleOpenModal = () => {
+        setShowModal(true)
+    }
+
+    /**
+     * Close comments modal
+     */
+    const handleCloseModal = () => {
+        setShowModal(false)
     }
 
     /**
@@ -87,11 +107,11 @@ const PhotoComments = ({
         return (
             <button
                 className="view-comments-btn"
-                onClick={onToggleComments}
+                onClick={handleOpenModal}
                 aria-expanded={showComments}
             >
-                {showComments
-                    ? 'Hide comments'
+                {commentsCount === 1
+                    ? 'View 1 comment'
                     : `View all ${commentsCount} comments`
                 }
             </button>
@@ -99,9 +119,9 @@ const PhotoComments = ({
     }
 
     /**
-     * Render comments list
+     * Render recent comments list (inline)
      */
-    const renderCommentsList = () => {
+    const renderRecentComments = () => {
         if (!showComments) return null
 
         return (
@@ -117,8 +137,17 @@ const PhotoComments = ({
                                 key={comment.id}
                                 comment={comment}
                                 currentUserId={currentUser?.id}
+                                isInline={true}
                             />
                         ))}
+                        {commentsCount > 3 && (
+                            <button
+                                className="view-more-comments"
+                                onClick={handleOpenModal}
+                            >
+                                View all {commentsCount} comments
+                            </button>
+                        )}
                     </div>
                 )}
             </div>
@@ -162,8 +191,17 @@ const PhotoComments = ({
     return (
         <div className="photo-comments">
             {renderCommentsCount()}
-            {renderCommentsList()}
+            {renderRecentComments()}
             {renderCommentInput()}
+
+            {/* Comments Modal */}
+            <PhotoCommentsModal
+                photo={photo}
+                isOpen={showModal}
+                onClose={handleCloseModal}
+                onLike={onLike}
+                currentUser={currentUser}
+            />
         </div>
     )
 }
@@ -171,7 +209,7 @@ const PhotoComments = ({
 /**
  * Individual Comment Item Component
  */
-const CommentItem = ({ comment, currentUserId }) => {
+const CommentItem = ({ comment, currentUserId, isInline = false }) => {
     const [showOptions, setShowOptions] = useState(false)
     const isOwner = comment.userId === currentUserId
 
@@ -194,8 +232,10 @@ const CommentItem = ({ comment, currentUserId }) => {
         }
     }
 
+    const commentClass = isInline ? 'comment-item' : 'comment-item-modal'
+
     return (
-        <div className="comment-item">
+        <div className={commentClass}>
             <Avatar
                 src={comment.userImageUrl}
                 alt={`${comment.username}'s avatar`}

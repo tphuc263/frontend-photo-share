@@ -10,14 +10,14 @@
  */
 
 import { Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
+import { AuthProvider } from './context/AuthContext'
 import Layout from './components/layout/Layout'
-import ProtectedRoute, { PublicRoute } from './components/auth/ProtectedRoute'
+import ProtectedRoute, { PublicRoute } from './components/features/auth/ProtectedRoute'
 
 // Import page components
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import Home from './pages/Home'
+import Home from './pages/home/Home.jsx'
 
 // Import placeholder components for future development
 const SearchPage = () => (

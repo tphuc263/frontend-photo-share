@@ -8,7 +8,7 @@
  * - No business logic or state management
  */
 
-import { apiClient } from './api'
+import { apiClient } from './apiService.js'
 
 export class CommentService {
     /**

@@ -9,8 +9,8 @@
 
 import { Link } from 'react-router-dom'
 import { MoreHorizontal } from 'lucide-react'
-import { formatRelativeTime } from '../../utils/helpers'
-import Avatar from '../common/Avatar'
+import { formatRelativeTime } from '../../../utils/helpers.js'
+import Avatar from '../../common/Avatar.jsx'
 
 const PhotoHeader = ({
                          username,

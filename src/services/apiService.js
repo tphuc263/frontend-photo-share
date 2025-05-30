@@ -121,7 +121,6 @@ export class ApiClient {
     /**
      * GET request
      * @param {string} url - Request URL
-     * @param {Object} params - Query parameters
      * @param {Object} options - Additional options
      * @returns {Promise<Object>} Response data
      */

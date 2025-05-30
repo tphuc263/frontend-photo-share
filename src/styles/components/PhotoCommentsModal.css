@@ -1,0 +1,450 @@
+/* ===================================
+   PHOTO COMMENTS MODAL STYLES
+   Instagram-style layout: Photo left, Comments right
+   ================================== */
+
+/* Modal overlay */
+.comments-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--ig-spacing-lg);
+}
+
+/* Main modal container */
+.comments-modal {
+    display: flex;
+    background: var(--ig-surface);
+    border-radius: var(--ig-radius-lg);
+    overflow: hidden;
+    max-width: 1200px;
+    max-height: 90vh;
+    width: 100%;
+    position: relative;
+    box-shadow: var(--ig-shadow-lg);
+}
+
+/* Close button */
+.comments-modal-close {
+    position: absolute;
+    top: var(--ig-spacing-md);
+    right: var(--ig-spacing-md);
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: var(--ig-radius-full);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.comments-modal-close:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+/* ===================================
+   LEFT SIDE - PHOTO SECTION
+   ================================== */
+
+.comments-modal-image-section {
+    flex: 1;
+    max-width: 60%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.comments-modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 90vh;
+}
+
+/* ===================================
+   RIGHT SIDE - COMMENTS SECTION
+   ================================== */
+
+.comments-modal-content {
+    flex: 1;
+    max-width: 40%;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    background: var(--ig-surface);
+    border-left: 1px solid var(--ig-border-color);
+}
+
+/* Header with user info */
+.comments-modal-header {
+    display: flex;
+    align-items: center;
+    padding: var(--ig-spacing-md);
+    gap: var(--ig-spacing-sm);
+    border-bottom: 1px solid var(--ig-border-color);
+    background: var(--ig-surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.comments-modal-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.comments-modal-username {
+    font-weight: 600;
+    color: var(--ig-primary-text);
+    font-size: var(--ig-font-size-sm);
+    display: block;
+}
+
+.comments-modal-time {
+    font-size: var(--ig-font-size-xs);
+    color: var(--ig-secondary-text);
+    display: block;
+    margin-top: 2px;
+}
+
+.comments-modal-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--ig-spacing-xs);
+    border-radius: var(--ig-radius-sm);
+    transition: background-color 0.2s ease;
+    color: var(--ig-secondary-text);
+}
+
+.comments-modal-menu:hover {
+    background-color: var(--ig-hover-background);
+}
+
+/* Caption section */
+.comments-modal-caption {
+    display: flex;
+    gap: var(--ig-spacing-sm);
+    padding: var(--ig-spacing-md);
+    border-bottom: 1px solid var(--ig-border-color);
+    background: var(--ig-surface);
+}
+
+/* Comments list area */
+.comments-modal-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--ig-spacing-sm) 0;
+    min-height: 200px;
+    max-height: calc(90vh - 200px);
+}
+
+.comments-modal-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.comments-modal-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.comments-modal-list::-webkit-scrollbar-thumb {
+    background: var(--ig-border-color);
+    border-radius: 2px;
+}
+
+.comments-modal-list::-webkit-scrollbar-thumb:hover {
+    background: var(--ig-secondary-text);
+}
+
+/* Individual comment in modal */
+.comment-item-modal {
+    display: flex;
+    gap: var(--ig-spacing-sm);
+    align-items: flex-start;
+    padding: var(--ig-spacing-sm) var(--ig-spacing-md);
+    transition: background-color 0.2s ease;
+}
+
+.comment-item-modal:hover {
+    background-color: var(--ig-hover-background);
+}
+
+.comment-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-text {
+    font-size: var(--ig-font-size-sm);
+    line-height: 1.4;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+}
+
+.comment-username {
+    font-weight: 600;
+    color: var(--ig-primary-text);
+    margin-right: var(--ig-spacing-xs);
+}
+
+.comment-message {
+    color: var(--ig-primary-text);
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--ig-spacing-md);
+    font-size: var(--ig-font-size-xs);
+    color: var(--ig-secondary-text);
+}
+
+.comment-time {
+    color: var(--ig-secondary-text);
+}
+
+.comment-reply,
+.comment-delete {
+    background: none;
+    border: none;
+    color: var(--ig-secondary-text);
+    cursor: pointer;
+    font-size: var(--ig-font-size-xs);
+    font-weight: 600;
+    transition: color 0.2s ease;
+    font-family: inherit;
+}
+
+.comment-reply:hover,
+.comment-delete:hover {
+    color: var(--ig-primary-text);
+}
+
+.comment-delete:hover {
+    color: var(--ig-error-color);
+}
+
+/* Comment like button */
+.comment-like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--ig-spacing-xs);
+    margin-left: var(--ig-spacing-xs);
+    transition: color 0.2s ease;
+    color: var(--ig-secondary-text);
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.comment-like-btn:hover {
+    color: var(--ig-primary-text);
+}
+
+.comment-like-btn.liked {
+    color: var(--ig-error-color);
+}
+
+/* Loading state */
+.comments-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ig-spacing-xl);
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-sm);
+}
+
+.loading-spinner {
+    color: var(--ig-secondary-text);
+}
+
+/* ===================================
+   ACTIONS SECTION
+   ================================== */
+
+.comments-modal-actions {
+    padding: var(--ig-spacing-md);
+    border-top: 1px solid var(--ig-border-color);
+    background: var(--ig-surface);
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--ig-spacing-md);
+    margin-bottom: var(--ig-spacing-sm);
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--ig-spacing-xs);
+    border-radius: var(--ig-radius-sm);
+    transition: all 0.2s ease;
+    color: var(--ig-primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background-color: var(--ig-hover-background);
+    transform: scale(1.1);
+}
+
+.like-btn.liked {
+    color: var(--ig-error-color);
+}
+
+.save-btn {
+    margin-left: auto;
+}
+
+.likes-count {
+    font-size: var(--ig-font-size-sm);
+    color: var(--ig-primary-text);
+    margin-bottom: var(--ig-spacing-sm);
+}
+
+.likes-count strong {
+    font-weight: 600;
+}
+
+/* ===================================
+   COMMENT FORM
+   ================================== */
+
+.comments-modal-form {
+    display: flex;
+    align-items: center;
+    gap: var(--ig-spacing-sm);
+    padding-top: var(--ig-spacing-sm);
+    border-top: 1px solid var(--ig-border-color);
+}
+
+.comment-input-modal {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: var(--ig-font-size-sm);
+    color: var(--ig-primary-text);
+    background: transparent;
+    font-family: inherit;
+    padding: var(--ig-spacing-sm) 0;
+    line-height: 1.4;
+}
+
+.comment-input-modal::placeholder {
+    color: var(--ig-secondary-text);
+}
+
+.comment-input-modal:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.post-comment-btn-modal {
+    background: none;
+    border: none;
+    color: var(--ig-link-color);
+    font-size: var(--ig-font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    padding: var(--ig-spacing-xs);
+    transition: color 0.2s ease;
+    font-family: inherit;
+}
+
+.post-comment-btn-modal:hover:not(:disabled) {
+    color: var(--ig-button-primary-hover);
+}
+
+.post-comment-btn-modal:disabled {
+    color: var(--ig-secondary-text);
+    cursor: not-allowed;
+}
+
+.post-comment-btn:disabled {
+    color: var(--ig-secondary-text);
+    cursor: not-allowed;
+}
+
+/* View more comments button */
+.view-more-comments {
+    background: none;
+    border: none;
+    color: var(--ig-secondary-text);
+    font-size: var(--ig-font-size-sm);
+    cursor: pointer;
+    padding: var(--ig-spacing-xs) 0;
+    margin-top: var(--ig-spacing-xs);
+    transition: color 0.2s ease;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.view-more-comments:hover {
+    color: var(--ig-primary-text);
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   ================================== */
+
+@media (max-width: 768px) {
+    .comments-modal {
+        flex-direction: column;
+        max-height: 95vh;
+        margin: var(--ig-spacing-sm);
+    }
+
+    .comments-modal-image-section {
+        max-width: 100%;
+        max-height: 50vh;
+        flex: none;
+    }
+
+    .comments-modal-content {
+        max-width: 100%;
+        min-width: auto;
+        flex: 1;
+    }
+
+    .comments-modal-list {
+        max-height: 30vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .comments-modal-overlay {
+        padding: 0;
+    }
+
+    .comments-modal {
+        border-radius: 0;
+        height: 100vh;
+        max-height: 100vh;
+        margin: 0;
+    }
+
+    .comments-modal-close {
+        top: var(--ig-spacing-sm);
+        right: var(--ig-spacing-sm);
+    }
+}

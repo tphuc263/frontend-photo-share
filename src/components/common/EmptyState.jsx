@@ -3,7 +3,7 @@ export const EmptyState = ({
                               description,
                               actionText,
                               onAction,
-                              icon = '📭'
+                              icon
                           }) => (
     <div className="empty-state">
         <div className="empty-state-icon">{icon}</div>

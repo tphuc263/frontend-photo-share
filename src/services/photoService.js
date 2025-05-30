@@ -8,7 +8,7 @@
  * - Return consistent data format
  */
 
-import {apiClient} from './api'
+import {apiClient} from './apiService.js'
 
 export class PhotoService {
     /**

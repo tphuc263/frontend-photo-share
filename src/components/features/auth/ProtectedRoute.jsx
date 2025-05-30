@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../../context/AuthContext.jsx'
+import {LoadingSpinner} from "../../common/LoadingSpinner.jsx";
 
 // Component to protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -9,9 +10,7 @@ const ProtectedRoute = ({ children }) => {
     // Show loading while checking auth status
     if (loading) {
         return (
-            <div className="loading-screen">
-                <div>Loading...</div>
-            </div>
+            <LoadingSpinner message="Checking authentication..." size="medium" />
         )
     }
 
@@ -37,9 +36,7 @@ export const PublicRoute = ({ children }) => {
     // Show loading while checking auth status
     if (loading) {
         return (
-            <div className="loading-screen">
-                <div>Loading...</div>
-            </div>
+            <LoadingSpinner message="Checking authentication..." size="medium" />
         )
     }
 

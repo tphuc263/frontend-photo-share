@@ -1,21 +1,11 @@
-/**
- * PHOTO CARD COMPONENT - CLEAN ARCHITECTURE
- * Purpose: Display individual photo with interactions
- * Responsibilities:
- * - Render photo card UI
- * - Handle user interactions via callbacks
- * - Manage card-specific state
- * - One module, one responsibility
- */
-
 import { useState } from 'react'
-import PhotoHeader from './PhotoHeader'
-import PhotoImage from './PhotoImage'
-import PhotoActions from './PhotoActions'
-import PhotoStats from './PhotoStats'
-import PhotoCaption from './PhotoCaption'
-import PhotoComments from './PhotoComments'
-import './PhotoCard.css'
+import PhotoHeader from './PhotoHeader.jsx'
+import PhotoImage from './PhotoImage.jsx'
+import PhotoActions from './PhotoActions.jsx'
+import PhotoStats from './PhotoStats.jsx'
+import PhotoCaption from './PhotoCaption.jsx'
+import PhotoComments from './PhotoComments.jsx'
+import '../../../styles/components/PhotoCard.css'
 
 const PhotoCard = ({
                        photo,
@@ -110,7 +100,7 @@ const PhotoCard = ({
                 userId={photo.userId}
             />
 
-            {/* Comments Section */}
+            {/* Comments Section - Now with modal support */}
             <PhotoComments
                 photoId={photo.id}
                 commentsCount={photo.commentsCount}
@@ -120,6 +110,8 @@ const PhotoCard = ({
                 onCommentTextChange={setCommentText}
                 onCommentSubmit={handleCommentSubmit}
                 currentUser={currentUser}
+                photo={photo} // Pass full photo object for modal
+                onLike={onLike} // Pass like handler for modal
             />
         </article>
     )

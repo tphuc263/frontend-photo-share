@@ -9,7 +9,7 @@
  */
 
 import { useState } from 'react'
-import './Avatar.css'
+import '../../styles/layout/Avatar.css'
 
 const Avatar = ({
                     src,

@@ -9,13 +9,13 @@
  */
 
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import PhotoCard from '../components/feed/PhotoCard'
-import { LoadingSpinner } from '../components/common/LoadingSpinner'
-import { EmptyState } from '../components/common/EmptyState'
-import { photoService } from '../services/photoService'
-import { commentService } from '../services/commentService'
-import '../styles/pages/homePage.css'
+import { useAuth } from '../../context/AuthContext.jsx'
+import PhotoCard from '../../components/features/feed/PhotoCard.jsx'
+import { LoadingSpinner } from '../../components/common/LoadingSpinner.jsx'
+import { EmptyState } from '../../components/common/EmptyState.jsx'
+import { photoService } from '../../services/photoService.js'
+import { commentService } from '../../services/commentService.js'
+import '../../styles/pages/homePage.css'
 
 const Home = () => {
     const { user } = useAuth()
