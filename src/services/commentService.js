@@ -1,20 +1,5 @@
-/**
- * COMMENT SERVICE - API LAYER
- * Purpose: Handle all comment-related API calls
- * Responsibilities:
- * - Create, read, update, delete comments
- * - Handle HTTP requests and responses
- * - Return consistent data format
- * - No business logic or state management
- */
+import api from '../config/ApiConfig.js'
 
-import {api} from './api.js'
-
-/**
- * Get all comments for a photo
- * @param {string} photoId - Photo ID
- * @returns {Promise<Object>} API response with comments array
- */
 export async function getPhotoComments(photoId) {
     try {
         return await api.get(`/comments/photo/${photoId}`)
@@ -23,11 +8,6 @@ export async function getPhotoComments(photoId) {
     }
 }
 
-/**
- * Get comments count for a photo
- * @param {string} photoId - Photo ID
- * @returns {Promise<Object>} API response with count
- */
 export async function getPhotoCommentsCount(photoId) {
     try {
         return await api.get(`/comments/photo/${photoId}/count`)
@@ -36,13 +16,6 @@ export async function getPhotoCommentsCount(photoId) {
     }
 }
 
-/**
- * Create a new comment
- * @param {string} photoId - Photo ID
- * @param {Object} commentData - Comment data
- * @param {string} commentData.text - Comment text
- * @returns {Promise<Object>} API response with created comment
- */
 export async function createComment(photoId, commentData) {
     try {
         return await api.post(`/comments/photo/${photoId}`, commentData)
@@ -51,13 +24,6 @@ export async function createComment(photoId, commentData) {
     }
 }
 
-/**
- * Update an existing comment
- * @param {string} commentId - Comment ID
- * @param {Object} commentData - Updated comment data
- * @param {string} commentData.text - Updated comment text
- * @returns {Promise<Object>} API response with updated comment
- */
 export async function updateComment(commentId, commentData) {
     try {
         return await api.put(`/comments/${commentId}`, commentData)
@@ -66,11 +32,6 @@ export async function updateComment(commentId, commentData) {
     }
 }
 
-/**
- * Delete a comment
- * @param {string} commentId - Comment ID
- * @returns {Promise<Object>} API response
- */
 export async function deleteComment(commentId) {
     try {
         return await api.delete(`/comments/${commentId}`)
@@ -79,15 +40,19 @@ export async function deleteComment(commentId) {
     }
 }
 
-/**
- * Get a specific comment by ID
- * @param {string} commentId - Comment ID
- * @returns {Promise<Object>} API response with comment data
- */
 export async function getComment(commentId) {
     try {
         return await api.get(`/comments/${commentId}`)
     } catch (error) {
         throw new Error(`Failed to load comment: ${error.message}`)
     }
+}
+
+export const commentService = {
+    getPhotoComments,
+    getPhotoCommentsCount,
+    createComment,
+    updateComment,
+    deleteComment,
+    getComment
 }

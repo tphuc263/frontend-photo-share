@@ -1,30 +1,21 @@
-// services/authService.js
-const API_BASE = 'http://localhost:8080/api/v1'
+import api from '../config/ApiConfig.js'
 
 export const loginUser = async (credentials) => {
-    const response = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(credentials),
-    })
-
-    const data = await response.json()
-    if (!response.ok) {
-        throw new Error(data.message || `HTTP Error: ${response.status}`)
+    try {
+        const response = await api.post('/auth/login', credentials)
+        return response.data
+    } catch (error) {
+        console.error('Login failed:', error.response?.data || error.message)
+        throw error
     }
-    return data
 }
 
 export const registerUser = async (userData) => {
-    const response = await fetch(`${API_BASE}/auth/register`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(userData),
-    })
-
-    const data = await response.json()
-    if (!response.ok) {
-        throw new Error(data.message || `HTTP Error: ${response.status}`)
+    try {
+        const response = await api.post('/auth/register', userData)
+        return response.data
+    } catch (error) {
+        console.error('Register failed:', error.response?.data || error.message)
+        throw error
     }
-    return data
 }

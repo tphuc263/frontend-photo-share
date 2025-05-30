@@ -1,7 +1,7 @@
 // src/pages/search/Search.jsx
 import { Search as SearchIcon } from 'lucide-react'
 import { useSearch } from '../../hooks/useSearch.js'
-import { useRecentSearches } from '../../hooks/useRecentSearches.js'
+import { useRecentSearches } from '../../hooks/useRecentSearch.js'
 import SearchInput from '../../components/common/SearchInput.jsx'
 import UserListItem from '../../components/common/UserListItem.jsx'
 import EmptyState from '../../components/common/EmptyState.jsx'
