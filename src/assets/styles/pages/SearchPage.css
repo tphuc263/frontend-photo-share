@@ -1,0 +1,59 @@
+/* Search Page Styles */
+.search-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--ig-spacing-md);
+}
+
+.search-container {
+    background: var(--ig-surface);
+    border-radius: var(--ig-radius-lg);
+    overflow: hidden;
+}
+
+.search-header {
+    padding: var(--ig-spacing-lg);
+    border-bottom: 1px solid var(--ig-border-color);
+}
+
+.search-header h1 {
+    font-size: var(--ig-font-size-xl);
+    font-weight: 600;
+    color: var(--ig-primary-text);
+}
+
+.search-results {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-loading {
+    padding: var(--ig-spacing-lg);
+    text-align: center;
+}
+
+.recent-searches {
+    border-top: 1px solid var(--ig-border-color);
+}
+
+.recent-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    padding: var(--ig-spacing-md);
+    border-bottom: 1px solid var(--ig-border-color);
+}
+
+.recent-header h3 {
+    font-size: var(--ig-font-size-base);
+    font-weight: 600;
+    color: var(--ig-primary-text);
+}
+
+.clear-recent {
+    background: none;
+    border: none;
+    color: var(--ig-link-color);
+    font-size: var(--ig-font-size-sm);
+    cursor: pointer;
+}

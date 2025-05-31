@@ -1,6 +1,6 @@
 // src/components/common/SearchInput.jsx
 import { Search as SearchIcon, X } from 'lucide-react'
-import '../../styles/components/SearchInput.css'
+import '../../assets/styles/components/SearchInput.css'
 
 const SearchInput = ({
                          value,

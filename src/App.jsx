@@ -13,19 +13,12 @@ import {Route, Routes} from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext'
 import Layout from './components/layout/Layout'
 import ProtectedRoute, {PublicRoute} from './components/features/auth/ProtectedRoute'
+import Search from './pages/search/Search'
 
 // Import page components
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import Home from './pages/home/Home.jsx'
-
-// Import placeholder components for future development
-const SearchPage = () => (
-    <div className="page-placeholder">
-        <h2>🔍 Search Page</h2>
-        <p>Search functionality coming soon...</p>
-    </div>
-)
 
 const ExplorePage = () => (
     <div className="page-placeholder">
@@ -126,7 +119,7 @@ function App() {
                         path="/search"
                         element={
                             <ProtectedRoute>
-                                <SearchPage/>
+                                <Search/>
                             </ProtectedRoute>
                         }
                     />

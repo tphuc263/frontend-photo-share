@@ -14,3 +14,7 @@
 @import 'layout/maincontent.css';
 /* Layout-specific styles */
 @import 'layout/sidebar.css';
+
+@import 'pages/authPage.css';
+@import 'pages/homePage.css';
+@import 'pages/searchPage.css';

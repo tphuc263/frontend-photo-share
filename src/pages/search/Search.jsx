@@ -6,7 +6,7 @@ import SearchInput from '../../components/common/SearchInput.jsx'
 import UserListItem from '../../components/common/UserListItem.jsx'
 import EmptyState from '../../components/common/EmptyState.jsx'
 import { LoadingSpinner } from '../../components/common/LoadingSpinner.jsx'
-import '../../styles/pages/searchPage.css'
+import '../../assets/styles/pages/searchPage.css'
 
 const Search = () => {
     const { query, results, loading, error, handleSearch, clearSearch } = useSearch()

@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import Avatar from './Avatar.jsx'
 import { formatNumber } from '../../utils/helpers.js'
-import '../../styles/components/UserListItem.css'
+import '../../assets/styles/components/UserListItem.css'
 
 const UserListItem = ({
                           user,
