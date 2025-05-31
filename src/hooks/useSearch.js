@@ -26,7 +26,7 @@ export const useSearch = () => {
                 const response = await searchService.searchUsers(searchQuery, 0, 10)
 
                 if (response.success) {
-                    setResults(response.data.content || [])
+                    setResults(response.data.data.content || [])
                 } else {
                     setError(response.error)
                 }
@@ -36,7 +36,7 @@ export const useSearch = () => {
             } finally {
                 setLoading(false)
             }
-        }, 300),
+        }, 500),
         []
     )
 

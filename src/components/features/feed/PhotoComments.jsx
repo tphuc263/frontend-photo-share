@@ -268,4 +268,4 @@ const CommentItem = ({comment, currentUserId, isInline = false}) => {
     )
 }
 
-export default <PhotoComments></PhotoComments>
+export default PhotoComments
