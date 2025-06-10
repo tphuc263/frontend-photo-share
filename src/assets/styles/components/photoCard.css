@@ -1,0 +1,55 @@
+.photo-card {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    margin: 20px auto; /* Canh giữa và tạo khoảng cách */
+    max-width: 470px; /* Chiều rộng tối đa giống Instagram */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Đảm bảo mọi thứ nằm trong card */
+}
+
+.photo-card-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #efefef;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Làm tròn ảnh đại diện */
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.username {
+    font-weight: 600; /* Đậm hơn cho tên người dùng */
+    color: #262626;
+}
+
+.photo {
+    width: 100%;
+    display: block; /* Loại bỏ khoảng trắng thừa dưới ảnh */
+    object-fit: cover; /* Đảm bảo ảnh vừa khung mà không bị méo */
+}
+
+.photo-card-actions {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    font-size: 24px; /* Kích thước icon trái tim */
+    cursor: pointer;
+    color: #8e8e8e; /* Màu xám mặc định */
+    transition: transform 0.2s ease-in-out;
+}
+
+.like-button.liked {
+    color: #ed4956; /* Màu đỏ khi đã thích */
+    animation: pulse 0.3s ease-in-out; /* Hiệu ứng nhịp đập */
+}

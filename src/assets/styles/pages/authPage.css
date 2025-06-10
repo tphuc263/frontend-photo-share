@@ -1,65 +1,103 @@
-/* ===================================
-   AUTHENTICATION FORM STYLES
-   ================================== */
-
-/* Auth container wrapper */
 .auth-container {
     width: 100%;
-    max-width: 350px; /* Instagram's login form width */
+    max-width: 360px; /* Chiều rộng chuẩn cho form đăng nhập */
     margin: 0 auto;
 }
 
-/* Auth card container - Instagram's clean design */
+/* Card chứa form */
 .auth-card {
     background: var(--ig-surface);
-    padding: var(--ig-spacing-xl);
+    padding: var(--ig-spacing-xl) var(--ig-spacing-lg);
     border: 1px solid var(--ig-border-color);
     border-radius: var(--ig-radius-sm);
     box-shadow: var(--ig-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-lg); /* Khoảng cách giữa các phần tử con */
 }
 
-/* Auth header section */
+/* Header: Chứa logo/tên app */
 .auth-header {
     text-align: center;
-    margin-bottom: var(--ig-spacing-xl);
+    margin-bottom: var(--ig-spacing-sm);
 }
 
 .auth-header h1 {
-    /* ShareApp title with Instagram's gradient */
     font-family: 'Inter', sans-serif;
     font-size: var(--ig-font-size-2xl);
     font-weight: 700;
     letter-spacing: -0.5px;
-    margin-bottom: var(--ig-spacing-sm);
     background: var(--ig-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Fallback for browsers not supporting background-clip */
+    margin: 0;
 }
 
-.auth-header p {
-    color: var(--ig-secondary-text);
-    font-size: var(--ig-font-size-base);
-    font-weight: 400;
-}
-
-/* Success message styling */
+/* Thông báo thành công (sau khi đăng ký) */
 .success-message {
-    background-color: #d4edda;
+    background-color: rgba(0, 186, 124, 0.1); /* Màu nền nhạt hơn */
     color: var(--ig-success-color);
     padding: var(--ig-spacing-md);
     border-radius: var(--ig-radius-md);
-    margin-bottom: var(--ig-spacing-md);
     border: 1px solid rgba(0, 186, 124, 0.2);
     text-align: center;
     font-size: var(--ig-font-size-sm);
 }
 
 /* ===================================
-   PASSWORD INPUT COMPONENTS
+   FORM ELEMENTS
    ================================== */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-md); /* Khoảng cách giữa các input group */
+}
 
-/* Password input wrapper */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-xs);
+}
+
+.form-label {
+    font-size: var(--ig-font-size-sm);
+    font-weight: 600;
+    color: var(--ig-secondary-text);
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--ig-spacing-sm) var(--ig-spacing-md);
+    border: 1px solid var(--ig-border-color);
+    border-radius: var(--ig-radius-md);
+    background-color: var(--ig-background);
+    font-size: var(--ig-font-size-base);
+    color: var(--ig-primary-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--ig-link-color);
+    box-shadow: 0 0 0 1px var(--ig-link-color);
+}
+
+.form-input::placeholder {
+    color: #c7c7c7;
+}
+
+.form-input.error {
+    border-color: var(--ig-error-color);
+}
+
+.form-input:disabled {
+    background-color: #efefef;
+    cursor: not-allowed;
+}
+
+/* Wrapper cho input password và icon */
 .password-input-wrapper {
     position: relative;
     display: flex;
@@ -67,22 +105,158 @@
 }
 
 .password-input-wrapper .form-input {
-    padding-right: 40px;
+    padding-right: 45px; /* Tạo không gian cho icon */
 }
 
-/* Password visibility toggle button */
+/* Nút bật/tắt hiển thị mật khẩu */
 .password-toggle {
     position: absolute;
-    right: var(--ig-spacing-md);
-    background: none;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 45px;
+    background: transparent;
     border: none;
     cursor: pointer;
-    padding: var(--ig-spacing-xs);
-    border-radius: var(--ig-radius-sm);
-    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--ig-secondary-text);
 }
 
-.password-toggle:hover {
-    background-color: var(--ig-hover-background);
+.password-toggle .w-5 { width: 1.25rem; }
+.password-toggle .h-5 { height: 1.25rem; }
+
+/* ===================================
+   MESSAGES & HELPERS
+   ================================== */
+.error-message {
+    color: var(--ig-error-color);
+    font-size: var(--ig-font-size-sm);
+    margin-top: var(--ig-spacing-xs);
 }
+
+.submit-error {
+    background-color: rgba(237, 73, 86, 0.1);
+    padding: var(--ig-spacing-md);
+    border-radius: var(--ig-radius-md);
+    text-align: center;
+}
+
+.help-text {
+    font-size: var(--ig-font-size-xs);
+    color: var(--ig-secondary-text);
+    margin-top: var(--ig-spacing-xs);
+}
+
+.success-text {
+    color: var(--ig-success-color);
+    font-weight: 500;
+}
+
+.warning-text {
+    color: #f39c12;
+    font-weight: 500;
+}
+
+/* ===================================
+   SUBMIT BUTTON & FOOTER
+   ================================== */
+.submit-btn {
+    background-color: var(--ig-button-primary);
+    color: var(--ig-surface);
+    border: none;
+    border-radius: var(--ig-radius-md);
+    padding: var(--ig-spacing-sm);
+    font-size: var(--ig-font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ig-spacing-sm);
+    min-height: 36px;
+    margin-top: var(--ig-spacing-sm);
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: var(--ig-button-primary-hover);
+}
+
+.submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.auth-footer {
+    text-align: center;
+    font-size: var(--ig-font-size-sm);
+    color: var(--ig-primary-text);
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-md);
+}
+
+.auth-footer p {
+    margin: 0;
+}
+
+.auth-link {
+    color: var(--ig-link-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.terms-text {
+    font-size: var(--ig-font-size-xs);
+    color: var(--ig-secondary-text);
+    line-height: 1.4;
+}
+
+/* ===================================
+   PASSWORD STRENGTH INDICATOR
+   ================================== */
+.password-strength {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ig-spacing-xs);
+    margin-top: var(--ig-spacing-sm);
+}
+
+.strength-text {
+    font-size: var(--ig-font-size-sm);
+    font-weight: 500;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 5px;
+    background-color: #efefef;
+    border-radius: var(--ig-radius-full);
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    border-radius: var(--ig-radius-full);
+    transition: width 0.3s ease, background-color 0.3s ease;
+    width: 0;
+}
+
+.strength-weak { width: 25%; }
+.strength-fair { width: 50%; }
+.strength-good { width: 75%; }
+.strength-strong { width: 100%; }

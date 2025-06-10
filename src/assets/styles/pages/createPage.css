@@ -1,0 +1,142 @@
+.create-page {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px; /* Chiều rộng tối đa của trang */
+    margin: 40px auto; /* Căn giữa và tạo khoảng cách trên dưới */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Hiệu ứng đổ bóng nhẹ */
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài border-radius */
+    border: 1px solid #dbdbdb; /* Viền nhẹ giống Instagram */
+}
+
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #efefef; /* Đường kẻ phân chia */
+    font-size: 16px;
+    font-weight: 600;
+    color: #262626;
+}
+
+.create-header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #262626;
+}
+
+.cancel-btn,
+.share-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.cancel-btn {
+    color: #8e8e8e; /* Màu xám nhạt */
+}
+
+.share-btn {
+    color: #0095f6; /* Màu xanh của Instagram */
+}
+
+.share-btn:disabled {
+    opacity: 0.5; /* Làm mờ khi vô hiệu hóa */
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #ed4956; /* Màu đỏ cho lỗi */
+    text-align: center;
+    padding: 10px 16px;
+    background-color: #ffebeb;
+    border-bottom: 1px solid #f0a8ae;
+    font-size: 0.9em;
+}
+
+.image-upload-section {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px; /* Chiều cao tối thiểu cho vùng chọn ảnh */
+    background-color: #fafafa; /* Màu nền nhẹ cho khu vực chọn ảnh */
+    border-bottom: 1px solid #efefef;
+}
+
+.image-preview-container {
+    width: 100%;
+    max-width: 400px; /* Giới hạn chiều rộng của ảnh preview */
+    height: 250px;
+    border: 2px dashed #dbdbdb; /* Viền nét đứt */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden; /* Đảm bảo ảnh preview không tràn ra ngoài */
+    position: relative; /* Cho phép căn giữa ảnh bên trong */
+    background-color: #e0e0e0; /* Màu nền cho vùng chưa có ảnh */
+    color: #8e8e8e;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh được cover toàn bộ khung hình */
+    display: block; /* Loại bỏ khoảng trắng dưới ảnh */
+}
+
+.placeholder {
+    text-align: center;
+}
+
+.placeholder .icon {
+    font-size: 3em; /* Kích thước icon dấu cộng */
+    font-weight: 100; /* Làm cho icon mảnh hơn */
+    line-height: 1; /* Căn chỉnh dòng */
+    margin-bottom: 10px;
+    display: block; /* Đặt icon trên dòng riêng */
+}
+
+.placeholder p {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.form-section {
+    padding: 16px;
+}
+
+.caption-input,
+.tags-input {
+    width: calc(100% - 20px); /* Đảm bảo padding không làm tràn */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    font-size: 1em;
+    resize: vertical; /* Cho phép thay đổi kích thước chiều dọc cho textarea */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; /* Font chữ hệ thống */
+}
+
+.caption-input::placeholder,
+.tags-input::placeholder {
+    color: #8e8e8e;
+}
+
+.caption-input:focus,
+.tags-input:focus {
+    outline: none;
+    border-color: #a8a8a8; /* Màu border khi focus */
+}

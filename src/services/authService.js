@@ -1,6 +1,6 @@
 import api from '../config/ApiConfig.js'
 
-export const loginUser = async (credentials) => {
+export const login = async (credentials) => {
     try {
         const response = await api.post('/auth/login', credentials)
         return response.data
@@ -10,7 +10,7 @@ export const loginUser = async (credentials) => {
     }
 }
 
-export const registerUser = async (userData) => {
+export const register = async (userData) => {
     try {
         const response = await api.post('/auth/register', userData)
         return response.data

@@ -22,14 +22,14 @@ const SideBar = () => {
     }
 
     if (!isAuthenticated) {
-        return null // Don't show sidebar for unauthenticated users
+        return null
     }
 
     return (
         <aside className="sidebar">
             {/* Logo/Brand */}
             <div className="sidebar-brand">
-                <h2>ShareApp</h2>
+                <h2>Share App</h2>
             </div>
 
             {/* Navigation Links */}

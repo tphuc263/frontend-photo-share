@@ -1,24 +1,14 @@
-/**
- * MAIN APPLICATION COMPONENT
- * Purpose: Setup app-wide providers and routing
- * Responsibilities:
- * - Wrap app with necessary providers (Auth, Router)
- * - Define application routes
- * - Handle route protection
- * - Provide consistent layout structure
- * - No business logic or direct component logic
- */
-
 import {Route, Routes} from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext'
 import Layout from './components/layout/Layout'
 import ProtectedRoute, {PublicRoute} from './components/features/auth/ProtectedRoute'
-import Search from './pages/search/Search'
 
-// Import page components
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import Home from './pages/home/Home.jsx'
+import Home from './pages/home/Home'
+import Search from './pages/search/Search'
+import Create from './pages/create/Create'
+import Profile from './pages/profile/Profile'
 
 const ExplorePage = () => (
     <div className="page-placeholder">
@@ -41,20 +31,6 @@ const NotificationsPage = () => (
     </div>
 )
 
-const CreatePage = () => (
-    <div className="page-placeholder">
-        <h2>➕ Create Post</h2>
-        <p>Share your photos and thoughts...</p>
-    </div>
-)
-
-const ProfilePage = () => (
-    <div className="page-placeholder">
-        <h2>👤 Profile Page</h2>
-        <p>Manage your profile and settings...</p>
-    </div>
-)
-
 const NotFoundPage = () => (
     <div className="page-placeholder">
         <h2>❌ Page Not Found</h2>
@@ -62,24 +38,11 @@ const NotFoundPage = () => (
     </div>
 )
 
-/**
- * Main App Component
- * Sets up the entire application structure
- */
 function App() {
     return (
-        // AuthProvider: Provides authentication context to entire app
         <AuthProvider>
-            {/* Layout: Handles responsive layout with sidebar */}
             <Layout>
-                {/* Routes: Define all application routes */}
                 <Routes>
-                    {/* ===================================
-                        PUBLIC ROUTES (No auth required)
-                        Redirect to home if already authenticated
-                        ================================== */}
-
-                    {/* Login Page */}
                     <Route
                         path="/login"
                         element={
@@ -89,7 +52,6 @@ function App() {
                         }
                     />
 
-                    {/* Registration Page */}
                     <Route
                         path="/register"
                         element={
@@ -99,12 +61,6 @@ function App() {
                         }
                     />
 
-                    {/* ===================================
-                        PROTECTED ROUTES (Auth required)
-                        Redirect to login if not authenticated
-                        ================================== */}
-
-                    {/* Home/Dashboard - Main feed */}
                     <Route
                         path="/"
                         element={
@@ -114,7 +70,6 @@ function App() {
                         }
                     />
 
-                    {/* Search functionality */}
                     <Route
                         path="/search"
                         element={
@@ -124,7 +79,6 @@ function App() {
                         }
                     />
 
-                    {/* Explore/Discovery page */}
                     <Route
                         path="/explore"
                         element={
@@ -134,7 +88,6 @@ function App() {
                         }
                     />
 
-                    {/* Direct messages */}
                     <Route
                         path="/messages"
                         element={
@@ -144,7 +97,6 @@ function App() {
                         }
                     />
 
-                    {/* Notifications center */}
                     <Route
                         path="/notifications"
                         element={
@@ -154,41 +106,33 @@ function App() {
                         }
                     />
 
-                    {/* Create new post */}
                     <Route
                         path="/create"
                         element={
                             <ProtectedRoute>
-                                <CreatePage/>
+                                <Create/>
                             </ProtectedRoute>
                         }
                     />
 
-                    {/* User profile */}
                     <Route
                         path="/profile"
                         element={
                             <ProtectedRoute>
-                                <ProfilePage/>
+                                <Profile/>
                             </ProtectedRoute>
                         }
                     />
 
-                    {/* User profile with ID parameter */}
                     <Route
                         path="/profile/:userId"
                         element={
                             <ProtectedRoute>
-                                <ProfilePage/>
+                                <Profile/>
                             </ProtectedRoute>
                         }
                     />
 
-                    {/* ===================================
-                        PLACEHOLDER ROUTES FOR FUTURE FEATURES
-                        ================================== */}
-
-                    {/* Settings page */}
                     <Route
                         path="/settings"
                         element={
@@ -201,7 +145,6 @@ function App() {
                         }
                     />
 
-                    {/* Help/Support page */}
                     <Route
                         path="/help"
                         element={
@@ -214,7 +157,6 @@ function App() {
                         }
                     />
 
-                    {/* Terms of Service */}
                     <Route
                         path="/terms"
                         element={
@@ -225,7 +167,6 @@ function App() {
                         }
                     />
 
-                    {/* Privacy Policy */}
                     <Route
                         path="/privacy"
                         element={
@@ -236,7 +177,6 @@ function App() {
                         }
                     />
 
-                    {/* Forgot Password */}
                     <Route
                         path="/forgot-password"
                         element={
@@ -256,10 +196,6 @@ function App() {
                         }
                     />
 
-                    {/* ===================================
-                        CATCH-ALL ROUTE (404 Not Found)
-                        Must be last route
-                        ================================== */}
                     <Route
                         path="*"
                         element={<NotFoundPage/>}

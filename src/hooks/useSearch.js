@@ -1,68 +1,51 @@
 // src/hooks/useSearch.js
-import {useCallback, useState} from 'react'
-import {searchService} from '../services/searchService.js'
-import {debounce} from '../utils/helpers.js'
+import { useCallback, useState } from 'react';
+import { searchUsers } from '../services/searchService.js';
+import { debounce } from '../utils/helpers.js';
 
 export const useSearch = () => {
-    const [query, setQuery] = useState('')
-    const [results, setResults] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    /**
-     * Perform search with debouncing
-     */
     const performSearch = useCallback(
         debounce(async (searchQuery) => {
             if (!searchQuery.trim()) {
-                setResults([])
-                return
+                setResults([]);
+                return;
             }
+
+            setLoading(true);
+            setError(null);
 
             try {
-                setLoading(true)
-                setError(null)
+                const response = await searchUsers(searchQuery, 0, 10);
+                const pageData = response.data;
 
-                const response = await searchService.searchUsers(searchQuery, 0, 10)
+                setResults(pageData.content || []);
 
-                if (response.success) {
-                    setResults(response.data.data.content || [])
-                } else {
-                    setError(response.error)
-                }
             } catch (err) {
-                setError(err.message)
-                setResults([])
+                const errorMessage = err.response?.data?.message || err.message || 'An unknown error occurred.';
+                setError(errorMessage);
+                setResults([]);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }, 500),
+        }, 500), // Debounce 500ms
         []
-    )
+    );
 
-    /**
-     * Handle search query change
-     */
     const handleSearch = (newQuery) => {
-        setQuery(newQuery)
-        performSearch(newQuery)
-    }
-
-    /**
-     * Clear search
-     */
-    const clearSearch = () => {
-        setQuery('')
-        setResults([])
-        setError(null)
-    }
+        setQuery(newQuery);
+        performSearch(newQuery);
+    };
 
     return {
         query,
         results,
         loading,
         error,
-        handleSearch,
-        clearSearch
-    }
-}
+        handleSearch
+    };
+};

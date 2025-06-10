@@ -1,19 +1,3 @@
-/**
- * UTILITY FUNCTIONS
- * Purpose: Provide reusable helper functions
- * Responsibilities:
- * - Date/time formatting
- * - Number formatting
- * - Text processing
- * - Data validation
- * - No business logic or API calls
- */
-
-/**
- * Format relative time (e.g., "2h ago", "3 days ago")
- * @param {string|Date} date - Date to format
- * @returns {string} Formatted relative time
- */
 export const formatRelativeTime = (date) => {
     try {
         const now = new Date()
@@ -61,11 +45,6 @@ export const formatRelativeTime = (date) => {
     }
 }
 
-/**
- * Format large numbers (e.g., 1.2K, 1.5M)
- * @param {number} num - Number to format
- * @returns {string} Formatted number
- */
 export const formatNumber = (num) => {
     if (typeof num !== 'number' || isNaN(num)) {
         return '0'
@@ -96,66 +75,6 @@ export const formatNumber = (num) => {
 }
 
 /**
- * Truncate text with ellipsis
- * @param {string} text - Text to truncate
- * @param {number} maxLength - Maximum length
- * @returns {string} Truncated text
- */
-export const truncateText = (text, maxLength = 100) => {
-    if (!text || typeof text !== 'string') {
-        return ''
-    }
-
-    if (text.length <= maxLength) {
-        return text
-    }
-
-    return text.substring(0, maxLength).trim() + '...'
-}
-
-/**
- * Parse hashtags from text
- * @param {string} text - Text to parse
- * @returns {string[]} Array of hashtags
- */
-export const parseHashtags = (text) => {
-    if (!text || typeof text !== 'string') {
-        return []
-    }
-
-    const hashtags = text.match(/#\w+/g) || []
-    return hashtags.map(tag => tag.substring(1).toLowerCase())
-}
-
-/**
- * Parse user mentions from text
- * @param {string} text - Text to parse
- * @returns {string[]} Array of usernames
- */
-export const parseMentions = (text) => {
-    if (!text || typeof text !== 'string') {
-        return []
-    }
-
-    const mentions = text.match(/@\w+/g) || []
-    return mentions.map(mention => mention.substring(1).toLowerCase())
-}
-
-/**
- * Validate email format
- * @param {string} email - Email to validate
- * @returns {boolean} True if valid
- */
-export const isValidEmail = (email) => {
-    if (!email || typeof email !== 'string') {
-        return false
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-}
-
-/**
  * Validate username format
  * @param {string} username - Username to validate
  * @returns {boolean} True if valid
@@ -170,13 +89,6 @@ export const isValidUsername = (username) => {
     return usernameRegex.test(username)
 }
 
-/**
- * Generate random ID
- * @returns {string} Random ID
- */
-export const generateId = () => {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2)
-}
 
 /**
  * Debounce function calls
@@ -196,52 +108,58 @@ export const debounce = (func, wait) => {
     }
 }
 
-/**
- * Throttle function calls
- * @param {Function} func - Function to throttle
- * @param {number} limit - Time limit in milliseconds
- * @returns {Function} Throttled function
- */
-export const throttle = (func, limit) => {
-    let inThrottle
-    return function executedFunction(...args) {
-        if (!inThrottle) {
-            func.apply(this, args)
-            inThrottle = true
-            setTimeout(() => inThrottle = false, limit)
-        }
+export const validateCredentials = (credentials) => {
+    const errors = {}
+
+    if (!credentials.email?.trim()) {
+        errors.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(credentials.email)) {
+        errors.email = 'Please enter a valid email address'
+    }
+
+    if (!credentials.password) {
+        errors.password = 'Password is required'
+    } else if (credentials.password.length < 6) {
+        errors.password = 'Password must be at least 6 characters long'
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
     }
 }
 
-/**
- * Check if value is empty
- * @param {any} value - Value to check
- * @returns {boolean} True if empty
- */
-export const isEmpty = (value) => {
-    if (value === null || value === undefined) return true
-    if (typeof value === 'string') return value.trim() === ''
-    if (Array.isArray(value)) return value.length === 0
-    if (typeof value === 'object') return Object.keys(value).length === 0
-    return false
-}
+export const validateRegistration = (userData) => {
+    const errors = {}
 
-/**
- * Deep clone object
- * @param {Object} obj - Object to clone
- * @returns {Object} Cloned object
- */
-export const deepClone = (obj) => {
-    if (obj === null || typeof obj !== 'object') return obj
-    if (obj instanceof Date) return new Date(obj.getTime())
-    if (obj instanceof Array) return obj.map(item => deepClone(item))
-    if (typeof obj === 'object') {
-        const clonedObj = {}
-        for (const key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                clonedObj[key] = deepClone(obj[key])
-            }
-        }
-        return clonedObj
+    if (!userData.username?.trim()) {
+        errors.username = 'Username is required'
+    } else if (userData.username.length < 3) {
+        errors.username = 'Username must be at least 3 characters long'
+    } else if (!/^[a-zA-Z0-9._]+$/.test(userData.username)) {
+        errors.username = 'Username can only contain letters, numbers, dots and underscores'
+    }
+
+    if (!userData.email?.trim()) {
+        errors.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(userData.email)) {
+        errors.email = 'Please enter a valid email address'
+    }
+
+    if (!userData.password) {
+        errors.password = 'Password is required'
+    } else if (userData.password.length < 6) {
+        errors.password = 'Password must be at least 6 characters long'
+    }
+
+    if (!userData.confirmPassword) {
+        errors.confirmPassword = 'Please confirm your password'
+    } else if (userData.password !== userData.confirmPassword) {
+        errors.confirmPassword = 'Passwords do not match'
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
     }
 }

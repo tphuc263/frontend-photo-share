@@ -1,56 +1,34 @@
-/**
- * LOGIN COMPONENT - UI LAYER
- * Purpose: Handle login form UI and user interactions
- * Responsibilities:
- * - Render login form
- * - Handle form input changes
- * - Manage local form state and validation
- * - Handle form submission
- * - Display errors and loading states
- * - Navigation after successful login
- * - No business logic or API calls
- */
-
 import {useState} from 'react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useAuthContext} from '../../context/AuthContext'
 import {Eye, EyeOff} from 'lucide-react';
+import {validateCredentials} from "../../utils/helpers.js";
 import '../../assets/styles/pages/authPage.css'
 
 
 const Login = () => {
-    // Local form state
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
 
-    // Local UI state
-    const [errors, setErrors] = useState({})        // Form validation errors
-    const [showPassword, setShowPassword] = useState(false)  // Password visibility toggle
+    const [errors, setErrors] = useState({})
+    const [showPassword, setShowPassword] = useState(false)
 
-    // Get auth context and navigation
-    const {login, loading, validateCredentials} = useAuthContext()
+    const {login, loading} = useAuthContext()
     const navigate = useNavigate()
     const location = useLocation()
 
-    // Get redirect path from navigation state (used by ProtectedRoute)
     const from = location.state?.from?.pathname || '/'
 
-    /**
-     * Handle input field changes
-     * @param {Event} e - Input change event
-     */
     const handleChange = (e) => {
         const {name, value} = e.target
 
-        // Update form data
         setFormData(prev => ({
             ...prev,
             [name]: value
         }))
 
-        // Clear error for this field when user starts typing
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -59,52 +37,28 @@ const Login = () => {
         }
     }
 
-    /**
-     * Validate form using business logic validation
-     * @returns {boolean} True if form is valid
-     */
-    const validateForm = () => {
-        const validation = validateCredentials(formData)
-
-        if (!validation.isValid) {
-            setErrors(validation.errors)
-            return false
-        }
-
-        // Clear any existing errors
-        setErrors({})
-        return true
-    }
-
-    /**
-     * Handle form submission
-     * @param {Event} e - Form submit event
-     */
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Step 1: Validate form data
-        if (!validateForm()) {
+        const validationResult = validateCredentials(formData)
+        setErrors(validationResult.errors)
+
+        if (!validationResult.isValid) {
             return
         }
 
         try {
-            // Step 2: Attempt login using auth context
             const result = await login(formData)
 
-            // Step 3: Handle login result
             if (result.success) {
-                // Login successful - navigate to intended page
                 console.log('Login successful, navigating to:', from)
                 navigate(from, {replace: true})
             } else {
-                // Login failed - show error message
                 setErrors({
                     submit: result.error || 'Login failed. Please try again.'
                 })
             }
         } catch (error) {
-            // Handle unexpected errors
             console.error('Login submission error:', error)
             setErrors({
                 submit: 'An unexpected error occurred. Please try again.'
@@ -112,9 +66,6 @@ const Login = () => {
         }
     }
 
-    /**
-     * Handle password visibility toggle
-     */
     const togglePasswordVisibility = () => {
         setShowPassword(prev => !prev)
     }
@@ -125,7 +76,6 @@ const Login = () => {
                 {/* Header Section */}
                 <div className="auth-header">
                     <h1>ShareApp</h1>
-                    {/* Show success message if redirected from registration */}
                     {location.state?.message && (
                         <div className="success-message">
                             {location.state.message}

@@ -1,5 +1,5 @@
 import {createContext, useContext, useEffect, useState} from 'react'
-import {StorageService} from '../utils/storage'
+import {clearAuthData, getAuthData} from '../utils/storage'
 import {useAuth as useAuthLogic} from '../hooks/useAuth.js'
 
 const AuthContext = createContext(undefined)
@@ -18,15 +18,13 @@ export const AuthProvider = ({children}) => {
         loading: operationLoading,
         handleLogin,
         handleRegister,
-        handleLogout,
-        validateCredentials,
-        validateRegistration
+        handleLogout
     } = useAuthLogic()
 
     useEffect(() => {
         const initializeAuth = () => {
             try {
-                const {token: savedToken, user: savedUser} = StorageService.getAuthData()
+                const {token: savedToken, user: savedUser} = getAuthData()
 
                 if (savedToken && savedUser) {
                     setToken(savedToken)
@@ -37,8 +35,7 @@ export const AuthProvider = ({children}) => {
                 }
             } catch (error) {
                 console.error('Failed to initialize auth state:', error)
-
-                StorageService.clearAuthData()
+                clearAuthData()
             } finally {
                 setLoading(false)
             }
@@ -60,7 +57,6 @@ export const AuthProvider = ({children}) => {
     }
 
     const register = async (userData) => {
-        // Delegate to business logic layer
         const result = await handleRegister(userData)
 
         if (result.success) {
@@ -105,10 +101,6 @@ export const AuthProvider = ({children}) => {
         login,                   // Login function
         register,                // Registration function
         logout,                  // Logout function
-
-        // Validation utilities
-        validateCredentials,     // Credential validation
-        validateRegistration,    // Registration validation
 
         // User utilities
         getUserRole,             // Get user role

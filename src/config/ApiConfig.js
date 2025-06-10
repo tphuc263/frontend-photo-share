@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { StorageService } from '../utils/storage.js'
-
-const API_BASE = 'http://localhost:8080/api/v1'
+import {getToken, clearAuthData} from '../utils/storage.js'
+import {API_BASE_URL} from "../utils/constants.js";
 
 const api = axios.create({
-    baseURL: API_BASE,
+    baseURL: API_BASE_URL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json'
@@ -13,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-        const token = StorageService.getToken()
+        const token = getToken()
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -33,12 +32,11 @@ api.interceptors.response.use(
     },
     (error) => {
         if (error.response?.status === 401) {
-            StorageService.clearAuthData()
+            clearAuthData()
             window.location.href = '/login'
             return Promise.reject(new Error('Session expired'))
         }
 
-        // Handle other errors
         const message = error.response?.data?.message || error.message || 'Network error'
         return Promise.reject(new Error(message))
     }

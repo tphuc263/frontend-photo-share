@@ -1,138 +1,79 @@
-// src/pages/search/Search.jsx
-import { Search as SearchIcon } from 'lucide-react'
-import { useSearch } from '../../hooks/useSearch.js'
-import { useRecentSearches } from '../../hooks/useRecentSearch.js'
-import SearchInput from '../../components/common/SearchInput.jsx'
-import UserListItem from '../../components/common/UserListItem.jsx'
-import EmptyState from '../../components/common/EmptyState.jsx'
-import { LoadingSpinner } from '../../components/common/LoadingSpinner.jsx'
-import '../../assets/styles/pages/searchPage.css'
+import { useState, useEffect, useCallback} from 'react';
+import {debounce} from "../../utils/helpers.js";
+import {UserResultItem} from "../../components/features/UserResultItem.jsx";
+import {searchUsers} from "../../services/searchService.js";
+import '../../assets/styles/pages/searchPage.css';
+
 
 const Search = () => {
-    const { query, results, loading, error, handleSearch, clearSearch } = useSearch()
-    const { recentSearches, addToRecent, clearRecent } = useRecentSearches()
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
 
-    const showResults = query.trim() && (results.length > 0 || !loading)
-    const showRecent = !query && recentSearches.length > 0
+    const fetchUsers = async (searchText) => {
+        if (!searchText) {
+            setResults([]);
+            setHasSearched(false);
+            return;
+        }
 
-    /**
-     * Handle user selection
-     */
-    const handleUserSelect = (user) => {
-        addToRecent(user)
-    }
+        setLoading(true);
+        setHasSearched(true);
+        try {
+            const response = await searchUsers(searchText);
+            console.log(response);
+            if (response.data) {
+                setResults(response.data.content);
+            } else {
+                setResults([]);
+            }
+        } catch (error) {
+            console.error("Failed to fetch users:", error);
+            setResults([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const debouncedFetch = useCallback(
+        debounce((val) => {
+            fetchUsers(val).catch(() => {});
+        }, 500),
+        []
+    );
+
+    useEffect(() => {
+        debouncedFetch(query);
+    }, [query, debouncedFetch]);
 
     return (
         <div className="search-page">
             <div className="search-container">
-                <SearchHeader />
-
-                <SearchInput
+                <input
+                    type="text"
+                    placeholder="Search for users..."
+                    className="search-input"
                     value={query}
-                    onChange={handleSearch}
-                    onClear={clearSearch}
-                    placeholder="Search users..."
-                    autoFocus
+                    onChange={(e) => setQuery(e.target.value)}
                 />
 
-                <SearchResults
-                    show={showResults}
-                    loading={loading}
-                    error={error}
-                    results={results}
-                    query={query}
-                    onUserSelect={handleUserSelect}
-                />
+                <div className="search-results">
+                    {loading && <div className="status-message">Loading...</div>}
 
-                <RecentSearches
-                    show={showRecent}
-                    searches={recentSearches}
-                    onClearAll={clearRecent}
-                />
+                    {!loading && hasSearched && results.length === 0 && (
+                        <div className="status-message">No users found.</div>
+                    )}
 
-                <SearchEmptyState
-                    show={!showResults && !showRecent}
-                />
-            </div>
-        </div>
-    )
-}
-
-/**
- * Sub-components
- */
-const SearchHeader = () => (
-    <div className="search-header">
-        <h1>Search</h1>
-    </div>
-)
-
-const SearchResults = ({ show, loading, error, results, query, onUserSelect }) => {
-    if (!show) return null
-
-    return (
-        <div className="search-results">
-            {loading ? (
-                <div className="search-loading">
-                    <LoadingSpinner size="small" />
+                    {!loading && results.length > 0 && (
+                        results.map(user => (
+                            <UserResultItem key={user.id} user={user} />
+                        ))
+                    )}
                 </div>
-            ) : error ? (
-                <EmptyState
-                    title="Search Error"
-                    description={error}
-                    size="small"
-                />
-            ) : results.length > 0 ? (
-                <div className="results-list">
-                    {results.map(user => (
-                        <UserListItem
-                            key={user.id}
-                            user={user}
-                            onClick={onUserSelect}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <EmptyState
-                    title={`No users found`}
-                    description={`No results for "${query}"`}
-                    size="small"
-                />
-            )}
-        </div>
-    )
-}
-
-const RecentSearches = ({ show, searches, onClearAll }) => {
-    if (!show) return null
-
-    return (
-        <div className="recent-searches">
-            <div className="recent-header">
-                <h3>Recent</h3>
-                <button onClick={onClearAll} className="clear-recent">
-                    Clear all
-                </button>
-            </div>
-            <div className="recent-list">
-                {searches.map(user => (
-                    <UserListItem key={user.id} user={user} />
-                ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
-const SearchEmptyState = ({ show }) => {
-    if (!show) return null
-
-    return (
-        <EmptyState
-            icon={<SearchIcon size={48} />}
-            title="Search for users"
-            description="Find people by their username"
-        />
-    )
-}
-
-export default Search
+export default Search;

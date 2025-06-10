@@ -1,20 +1,8 @@
-/**
- * REGISTER COMPONENT - UI LAYER
- * Purpose: Handle registration form UI and user interactions
- * Responsibilities:
- * - Render registration form with all required fields
- * - Handle form input changes and validation
- * - Manage local form state
- * - Handle form submission
- * - Display errors and success states
- * - Navigation after successful registration
- * - No business logic or API calls
- */
-
 import {useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import {useAuthContext} from '../../context/AuthContext'
 import {Eye, EyeOff} from 'lucide-react';
+import {validateRegistration} from "../../utils/helpers.js";
 import '../../assets/styles/pages/authPage.css'
 
 
@@ -33,7 +21,7 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)  // Confirm password visibility
 
     // Get auth context and navigation
-    const {register, loading, validateRegistration} = useAuthContext()
+    const {register, loading} = useAuthContext()
     const navigate = useNavigate()
 
     /**
