@@ -136,8 +136,8 @@ export const validateRegistration = (userData) => {
         errors.username = 'Username is required'
     } else if (userData.username.length < 3) {
         errors.username = 'Username must be at least 3 characters long'
-    } else if (!/^[a-zA-Z0-9._]+$/.test(userData.username)) {
-        errors.username = 'Username can only contain letters, numbers, dots and underscores'
+    } else if (!/^[a-zA-Z0-9._ ]+$/.test(userData.username)) {
+        errors.username = 'Username can only contain letters, numbers, dots, underscores and white space'
     }
 
     if (!userData.email?.trim()) {

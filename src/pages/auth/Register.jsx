@@ -176,12 +176,6 @@ const Register = () => {
                                 {errors.username}
                             </span>
                         )}
-                        {/* Username requirements hint */}
-                        {!errors.username && formData.username && (
-                            <span className="help-text">
-                                3+ characters, letters, numbers, dots and underscores only
-                            </span>
-                        )}
                     </div>
 
                     {/* Email Input Field */}

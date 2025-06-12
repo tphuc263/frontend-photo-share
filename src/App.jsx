@@ -1,7 +1,7 @@
 import {Route, Routes} from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext'
 import Layout from './components/layout/Layout'
-import ProtectedRoute, {PublicRoute} from './components/features/auth/ProtectedRoute'
+import ProtectedRoute, {PublicRoute} from './utils/ProtectedRoute.jsx'
 
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
@@ -9,6 +9,7 @@ import Home from './pages/home/Home'
 import Search from './pages/search/Search'
 import Create from './pages/create/Create'
 import Profile from './pages/profile/Profile'
+import EditProfileForm from './pages/profile/EditProfileForm.jsx'
 
 const ExplorePage = () => (
     <div className="page-placeholder">
@@ -62,7 +63,7 @@ function App() {
                     />
 
                     <Route
-                        path="/"
+                        path="/home"
                         element={
                             <ProtectedRoute>
                                 <Home/>
@@ -131,6 +132,11 @@ function App() {
                                 <Profile/>
                             </ProtectedRoute>
                         }
+                    />
+
+                    <Route
+                        path = "/edit-profile"
+                        element={<ProtectedRoute><EditProfileForm/></ProtectedRoute>}
                     />
 
                     <Route

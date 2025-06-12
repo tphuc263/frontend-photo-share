@@ -32,7 +32,7 @@ export function clearAuthData() {
         localStorage.removeItem(AUTH_USER_KEY)
         console.log('Auth data cleared successfully')
     } catch (error) {
-        console .error('Failed to clear auth data:', error)
+        console.error('Failed to clear auth data:', error)
     }
 }
 

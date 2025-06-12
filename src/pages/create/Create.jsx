@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useCreatePost } from '../../hooks/useCreatePost.js'
+import {useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useCreatePost} from '../../hooks/useCreatePost.js'
 import '../../assets/styles/pages/createPage.css'
 
 const Create = () => {
@@ -32,12 +32,12 @@ const Create = () => {
     }
 
     const handleCaptionChange = (e) => {
-        setFormData(prev => ({ ...prev, caption: e.target.value }))
+        setFormData(prev => ({...prev, caption: e.target.value}))
         setError('')
     }
 
     const handleTagsChange = (e) => {
-        setFormData(prev => ({ ...prev, tags: e.target.value }))
+        setFormData(prev => ({...prev, tags: e.target.value}))
         setError('')
     }
 
@@ -85,12 +85,12 @@ const Create = () => {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    style={{ display: 'none' }}
+                    style={{display: 'none'}}
                     id="image-upload-input"
                 />
                 <label htmlFor="image-upload-input" className="image-preview-container">
                     {formData.imagePreview ? (
-                        <img src={formData.imagePreview} alt="Selected preview" className="image-preview" />
+                        <img src={formData.imagePreview} alt="Selected preview" className="image-preview"/>
                     ) : (
                         <div className="placeholder">
                             <span className="icon">+</span>

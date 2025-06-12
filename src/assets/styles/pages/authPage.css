@@ -124,8 +124,13 @@
     color: var(--ig-secondary-text);
 }
 
-.password-toggle .w-5 { width: 1.25rem; }
-.password-toggle .h-5 { height: 1.25rem; }
+.password-toggle .w-5 {
+    width: 1.25rem;
+}
+
+.password-toggle .h-5 {
+    height: 1.25rem;
+}
 
 /* ===================================
    MESSAGES & HELPERS
@@ -194,7 +199,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .auth-footer {
@@ -256,7 +263,18 @@
     width: 0;
 }
 
-.strength-weak { width: 25%; }
-.strength-fair { width: 50%; }
-.strength-good { width: 75%; }
-.strength-strong { width: 100%; }
+.strength-weak {
+    width: 25%;
+}
+
+.strength-fair {
+    width: 50%;
+}
+
+.strength-good {
+    width: 75%;
+}
+
+.strength-strong {
+    width: 100%;
+}

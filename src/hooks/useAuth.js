@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {login, register} from '../services/authService.js'
-import {setAuthData, clearAuthData} from '../utils/storage'
+import {clearAuthData, setAuthData} from '../utils/storage'
 
 export const useAuth = () => {
     const [loading, setLoading] = useState(false)
@@ -11,7 +11,7 @@ export const useAuth = () => {
         try {
             const response = await login(credentials)
             const {jwt, id, username, email, role} = response.data
-            const userData = {id,username,email,role}
+            const userData = {id, username, email, role}
             setAuthData(jwt, userData)
             return {
                 success: true,
@@ -47,7 +47,7 @@ export const useAuth = () => {
     const handleLogout = () => {
         try {
             clearAuthData()
-            return {success: true,message: 'Logout successful'}
+            return {success: true, message: 'Logout successful'}
         } catch (error) {
             console.error('Logout operation failed:', error)
         }

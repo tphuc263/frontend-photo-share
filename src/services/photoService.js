@@ -3,7 +3,7 @@ import api from '../config/ApiConfig.js'
 export const getUserPhotos = async (userId, page = 0, size = 20) => {
     try {
         const response = await api.get(`/photos/user/${userId}`, {
-            params: { page, size }
+            params: {page, size}
         })
         return response.data.data;
     } catch (error) {

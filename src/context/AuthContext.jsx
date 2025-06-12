@@ -92,8 +92,9 @@ export const AuthProvider = ({children}) => {
 
     const contextValue = {
         // State
-        user,                    // Current user object
-        token,                   // JWT token
+        user,
+        setUser,
+        token,
         loading: loading || operationLoading,  // Combined loading state
         isAuthenticated,         // Boolean authentication status
 
@@ -103,9 +104,9 @@ export const AuthProvider = ({children}) => {
         logout,                  // Logout function
 
         // User utilities
-        getUserRole,             // Get user role
+        getUserRole,
         hasRole,
-        isAdmin                  // Check admin status
+        isAdmin
     }
 
     return (

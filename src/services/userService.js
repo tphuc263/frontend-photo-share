@@ -17,3 +17,16 @@ export const getUserProfileById = async (userId) => {
         throw new Error(`Fail to get user profile by id: ${e.message}`)
     }
 }
+
+export const updateUserProfile = async (formData) => {
+    try {
+        const response = await api.put("/users/me", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data.data;
+    } catch (e) {
+        throw new Error(`Fail to update user profile: ${e.message}`)
+    }
+}

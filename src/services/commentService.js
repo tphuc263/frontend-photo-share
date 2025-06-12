@@ -1,5 +1,3 @@
-import api from '../config/ApiConfig.js'
-
 // export const getPhotoComments = async (photoId) => {
 //     try {
 //         return await api.get(`/comments/photo/${photoId}`)

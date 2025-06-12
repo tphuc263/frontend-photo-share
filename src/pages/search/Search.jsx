@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {debounce} from "../../utils/helpers.js";
 import {UserResultItem} from "../../components/features/UserResultItem.jsx";
 import {searchUsers} from "../../services/searchService.js";
@@ -38,7 +38,8 @@ const Search = () => {
 
     const debouncedFetch = useCallback(
         debounce((val) => {
-            fetchUsers(val).catch(() => {});
+            fetchUsers(val).catch(() => {
+            });
         }, 500),
         []
     );
@@ -67,7 +68,7 @@ const Search = () => {
 
                     {!loading && results.length > 0 && (
                         results.map(user => (
-                            <UserResultItem key={user.id} user={user} />
+                            <UserResultItem key={user.id} user={user}/>
                         ))
                     )}
                 </div>

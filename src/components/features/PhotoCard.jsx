@@ -11,11 +11,11 @@ const PhotoCard = ({
     return (
         <div className="photo-card">
             <div className="photo-card-header">
-                <img src={avatarSrc} alt={`${username}'s avatar`} className="avatar" />
+                <img src={avatarSrc} alt={`${username}'s avatar`} className="avatar"/>
                 <span className="username">{username}</span>
             </div>
 
-            <img src={photoSrc} alt="Post" className="photo" />
+            <img src={photoSrc} alt="Post" className="photo"/>
 
             <div className="photo-card-actions">
             </div>

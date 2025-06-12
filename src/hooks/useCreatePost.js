@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { createPhoto } from '../services/photoService.js'
+import {useState} from 'react'
+import {createPhoto} from '../services/photoService.js'
 
 const initialFormData = {
     image: null,

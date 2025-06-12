@@ -1,8 +1,7 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {getNewsfeed} from "../../services/newsfeedService.js";
 import PhotoCard from '../../components/features/PhotoCard.jsx';
 import '../../assets/styles/pages/homePage.css';
-
 
 
 const Home = () => {

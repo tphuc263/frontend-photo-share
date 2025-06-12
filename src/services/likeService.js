@@ -1,5 +1,3 @@
-import api from "../config/ApiConfig.js";
-
 // export const like = async (photoId) => {
 //     try {
 //         return await api.post(`/likes/like/photo/${photoId}`)
