@@ -1,4 +1,4 @@
-import {Route, Routes} from 'react-router-dom'
+import {Route, Routes, Navigate} from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext'
 import Layout from './components/layout/Layout'
 import ProtectedRoute, {PublicRoute} from './utils/ProtectedRoute.jsx'
@@ -32,6 +32,43 @@ const NotificationsPage = () => (
     </div>
 )
 
+const ForgotPasswordPage = () => (
+    <div className="auth-container">
+        <div className="auth-card">
+            <div className="auth-header">
+                <h1>🔑 Password Reset</h1>
+                <p>Reset your password</p>
+            </div>
+            <div className="page-placeholder">
+                <p>Password reset functionality coming soon...</p>
+            </div>
+        </div>
+    </div>
+);
+
+const SettingsPage = () => (
+    <div className="page-placeholder">
+        <h2>⚙️ Settings</h2>
+    </div>
+);
+
+const HelpPage = () => (
+    <div className="page-placeholder">
+        <h2>❓ Help & Support</h2>
+    </div>
+);
+const TermsPage = () => (
+    <div className="page-placeholder">
+        <h2>📄 Terms of Service</h2>
+    </div>
+);
+
+const PrivacyPage = () => (
+    <div className="page-placeholder">
+        <h2>🔒 Privacy Policy</h2>
+    </div>
+);
+
 const NotFoundPage = () => (
     <div className="page-placeholder">
         <h2>❌ Page Not Found</h2>
@@ -44,168 +81,31 @@ function App() {
         <AuthProvider>
             <Layout>
                 <Routes>
-                    <Route
-                        path="/login"
-                        element={
-                            <PublicRoute>
-                                <Login/>
-                            </PublicRoute>
-                        }
-                    />
+                    <Route path="/" element={<Navigate to="/login" replace/>} />
+                    <Route path="/terms" element={<TermsPage />} />
+                    <Route path="/privacy" element={<PrivacyPage />} />
 
-                    <Route
-                        path="/register"
-                        element={
-                            <PublicRoute>
-                                <Register/>
-                            </PublicRoute>
-                        }
-                    />
+                    <Route element={<PublicRoute />}>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                    </Route>
 
-                    <Route
-                        path="/home"
-                        element={
-                            <ProtectedRoute>
-                                <Home/>
-                            </ProtectedRoute>
-                        }
-                    />
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/explore" element={<ExplorePage />} />
+                        <Route path="/messages" element={<MessagesPage />} />
+                        <Route path="/notifications" element={<NotificationsPage />} />
+                        <Route path="/create" element={<Create />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile/:userId" element={<Profile />} />
+                        <Route path="/edit-profile" element={<EditProfileForm />} />
+                        <Route path="/settings" element={<SettingsPage />} />
+                        <Route path="/help" element={<HelpPage />} />
+                    </Route>
 
-                    <Route
-                        path="/search"
-                        element={
-                            <ProtectedRoute>
-                                <Search/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/explore"
-                        element={
-                            <ProtectedRoute>
-                                <ExplorePage/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/messages"
-                        element={
-                            <ProtectedRoute>
-                                <MessagesPage/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/notifications"
-                        element={
-                            <ProtectedRoute>
-                                <NotificationsPage/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/create"
-                        element={
-                            <ProtectedRoute>
-                                <Create/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/profile"
-                        element={
-                            <ProtectedRoute>
-                                <Profile/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/profile/:userId"
-                        element={
-                            <ProtectedRoute>
-                                <Profile/>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path = "/edit-profile"
-                        element={<ProtectedRoute><EditProfileForm/></ProtectedRoute>}
-                    />
-
-                    <Route
-                        path="/settings"
-                        element={
-                            <ProtectedRoute>
-                                <div className="page-placeholder">
-                                    <h2>⚙️ Settings</h2>
-                                    <p>Account and app settings...</p>
-                                </div>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/help"
-                        element={
-                            <ProtectedRoute>
-                                <div className="page-placeholder">
-                                    <h2>❓ Help & Support</h2>
-                                    <p>Get help and contact support...</p>
-                                </div>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/terms"
-                        element={
-                            <div className="page-placeholder">
-                                <h2>📄 Terms of Service</h2>
-                                <p>Legal terms and conditions...</p>
-                            </div>
-                        }
-                    />
-
-                    <Route
-                        path="/privacy"
-                        element={
-                            <div className="page-placeholder">
-                                <h2>🔒 Privacy Policy</h2>
-                                <p>How we handle your data...</p>
-                            </div>
-                        }
-                    />
-
-                    <Route
-                        path="/forgot-password"
-                        element={
-                            <PublicRoute>
-                                <div className="auth-container">
-                                    <div className="auth-card">
-                                        <div className="auth-header">
-                                            <h1>🔑 Password Reset</h1>
-                                            <p>Reset your password</p>
-                                        </div>
-                                        <div className="page-placeholder">
-                                            <p>Password reset functionality coming soon...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </PublicRoute>
-                        }
-                    />
-
-                    <Route
-                        path="*"
-                        element={<NotFoundPage/>}
-                    />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Layout>
         </AuthProvider>

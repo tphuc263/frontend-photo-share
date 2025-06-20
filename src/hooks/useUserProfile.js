@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {getCurrentUserProfile, getUserProfileById, updateUserProfile} from '../services/userService';
+import {getCurrentUserProfile, getUserProfileById} from '../services/userService';
 import {getUserPhotos} from '../services/photoService';
 
 export const useUserProfile = () => {

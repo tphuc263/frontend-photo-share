@@ -10,14 +10,3 @@ export const searchUsers = async (query, page = 0, size = 20) => {
         throw new Error(`Failed to search users: ${error.message}`)
     }
 }
-
-// export const searchAll = async (query, type = 'all', page = 0, size = 20) => {
-//     try {
-//         const response = await api.get('/search', {
-//             params: { q: query, type, page, size }
-//         })
-//         return response.data
-//     } catch (error) {
-//         throw new Error(`Failed to search: ${error.message}`)
-//     }
-// }
