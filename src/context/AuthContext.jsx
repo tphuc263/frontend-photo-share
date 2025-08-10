@@ -12,7 +12,7 @@ export const useAuthContext = () => {
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [initLoading, setInitLoading] = useState(true);
 
     const {
         loading: operationLoading,
@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
                 console.error('Failed to initialize auth state:', error)
                 clearAuthData()
             } finally {
-                setLoading(false)
+                setInitLoading(false);
             }
         }
 
@@ -91,23 +91,24 @@ export const AuthProvider = ({children}) => {
     }
 
     const contextValue = {
-        // State
-        user,
-        setUser,
-        token,
-        loading: loading || operationLoading,  // Combined loading state
-        isAuthenticated,         // Boolean authentication status
+      // State
+      user,
+      setUser,
+      token,
+      loading: initLoading,
+      operationLoading: operationLoading,
+      isAuthenticated, // Boolean authentication status
 
-        // Operations
-        login,                   // Login function
-        register,                // Registration function
-        logout,                  // Logout function
+      // Operations
+      login, // Login function
+      register, // Registration function
+      logout, // Logout function
 
-        // User utilities
-        getUserRole,
-        hasRole,
-        isAdmin
-    }
+      // User utilities
+      getUserRole,
+      hasRole,
+      isAdmin,
+    };
 
     return (
         <AuthContext.Provider value={contextValue}>

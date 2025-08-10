@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import {getNewsfeed} from "../../services/newsfeedService.js";
 import PhotoCard from '../../components/features/PhotoCard.jsx';
+import {Loader} from '../../components/common/Loader.jsx'
 import '../../assets/styles/pages/homePage.css';
 
 
 const Home = () => {
     const [feed, setFeed] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -65,6 +66,11 @@ const Home = () => {
                         Error: {error}
                     </div>
                 )}
+                {loading && feed.length === 0 && !error && (
+                    <div className="page-loader-container">
+                        <Loader />
+                    </div>
+                )}
 
                 {feed.map((post) => (
                     <PhotoCard
@@ -80,6 +86,12 @@ const Home = () => {
                         tags={post.tags}
                     />
                 ))}
+
+                {loading && feed.length > 0 && (
+                    <div className="load-more-loader">
+                        <Loader />
+                    </div>
+                )}
 
                 {hasMore && !loading && (
                     <button onClick={loadMore} className="load-more-btn">

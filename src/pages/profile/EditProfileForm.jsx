@@ -1,26 +1,54 @@
 import {useState, useEffect, useRef} from "react";
 import {useAuthContext} from "../../context/AuthContext.jsx";
-import {updateUserProfile} from "../../services/userService.js";
+import {
+  updateUserProfile,
+  getCurrentUserProfile,
+} from "../../services/userService.js";
 import '../../assets/styles/pages/editProfile.css';
 
 const EditProfileForm = () => {
     const {user: currentUser, setUser} = useAuthContext();
 
+    const [pageLoading, setPageLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+     const [formData, setFormData] = useState({
+       username: "",
+       bio: "",
+     });
+
     const fileInputRef = useRef(null);
     const [avatarFile, setAvatarFile] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState(null);
-    const [isUploading, setIsUploading] = useState(false);
-
-    const[username, setUsername] = useState("")
-    const[bio, setBio] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        if (currentUser) {
-            setUsername(currentUser.username || "");
-            setBio(currentUser.bio || "");
-            setAvatarPreview(currentUser.imageUrl || null);
+      const fetchProfileForEditing = async () => {
+        if (currentUser?.id) {
+          try {
+            const fullProfileData = await getCurrentUserProfile(); // Hoặc getUserProfile
+            setFormData({
+              username: fullProfileData.username || "",
+              bio: fullProfileData.bio || "",
+            });
+            setAvatarPreview(fullProfileData.imageUrl || null);
+            setError(null);
+          } catch (err) {
+            console.error("Failed to load profile data for editing:", err);
+            setError("Could not load your profile. Please refresh the page.");
+          } finally {
+            setPageLoading(false);
+          }
         }
-    }, [currentUser]);
+      };
+
+      fetchProfileForEditing();
+    }, [currentUser?.id]);
+
+    const handleInputChange = (e) => {
+      const { id, value } = e.target;
+      setFormData((prev) => ({ ...prev, [id]: value }));
+    };
 
     const handleAvatarClick = () => {
         fileInputRef.current.click();
@@ -36,17 +64,17 @@ const EditProfileForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsUploading(true);
+        setIsSubmitting(true);
 
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('bio', bio);
+        const dataToSubmit = new FormData();
+        dataToSubmit.append("username", formData.username);
+        dataToSubmit.append("bio", formData.bio);
         if (avatarFile) {
-            formData.append('image', avatarFile);
+            dataToSubmit.append("image", avatarFile);
         }
 
         try {
-            const updatedProfileData = await updateUserProfile(formData);
+            const updatedProfileData = await updateUserProfile(dataToSubmit);
             setUser(updatedProfileData);
             alert("Profile updated successfully!");
             setAvatarFile(null);
@@ -54,75 +82,92 @@ const EditProfileForm = () => {
             console.error('Failed to update profile:', error);
             alert(`Error: ${error.message}`);
         } finally {
-            setIsUploading(false);
+            setIsSubmitting(false);
         }
     };
 
-    if (!currentUser) {
-        return <div>Loading user data...</div>;
+    if (pageLoading) {
+      return (
+        <div className="edit-profile-container">Loading your profile...</div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="edit-profile-container error-message">{error}</div>
+      );
     }
 
     return (
-        <>
-            <div className="edit-profile-container">
-                <form onSubmit={handleSubmit} className="edit-profile-form">
-
-                    <div className="form-row form-row-avatar">
-                        <div className="avatar-preview-wrapper">
-                            <img
-                                src={avatarPreview}
-                                alt="Avatar Preview"
-                                className="avatar-preview"
-                            />
-                        </div>
-                        <div className="avatar-actions">
-                            <span className="current-username">{currentUser.username}</span>
-                            <button type="button" className="change-photo-button" onClick={handleAvatarClick}>
-                                Change profile photo
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <aside><label htmlFor={"username"}> Username </label></aside>
-                        <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-row">
-                        <aside>
-                            <label htmlFor={"bio"}> Bio </label>
-                        </aside>
-                        <input
-                            type="text"
-                            id="bio"
-                            value={bio}
-                            onChange={(e) => setBio(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="form-row">
-                        <aside></aside>
-                        <div className="input-wrapper">
-                            <button type="submit" className="submit-button" disabled={isUploading}>
-                                {isUploading ? "Submitting..." : "Submit"}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    style={{ display: 'none' }}
-                    accept="image/png, image/jpeg, image/gif"
+      <>
+        <div className="edit-profile-container">
+          <form onSubmit={handleSubmit} className="edit-profile-form">
+            <div className="form-row form-row-avatar">
+              <div className="avatar-preview-wrapper">
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  className="avatar-preview"
                 />
+              </div>
+              <div className="avatar-actions">
+                <span className="current-username">{formData.username}</span>
+                <button
+                  type="button"
+                  className="change-photo-button"
+                  onClick={handleAvatarClick}
+                >
+                  Change profile photo
+                </button>
+              </div>
             </div>
-        </>
-    )
+
+            <div className="form-row">
+              <aside>
+                <label htmlFor={"username"}> Username </label>
+              </aside>
+              <input
+                type="text"
+                id="username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="form-row">
+              <aside>
+                <label htmlFor={"bio"}> Bio </label>
+              </aside>
+              <input
+                type="text"
+                id="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="form-row">
+              <aside></aside>
+              <div className="input-wrapper">
+                <button
+                  type="submit"
+                  className="submit-button"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
+                </button>
+              </div>
+            </div>
+          </form>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+            accept="image/png, image/jpeg, image/gif"
+          />
+        </div>
+      </>
+    );
 }
 export default EditProfileForm

@@ -1,13 +1,13 @@
 import {Navigate, useLocation, Outlet} from 'react-router-dom'
 import {useAuthContext} from '../context/AuthContext.jsx'
-import {LoadingSpinner} from "../components/common/LoadingSpinner.jsx";
+import {Loader} from "../components/common/Loader.jsx";
 
 const ProtectedRoute = () => {
     const {isAuthenticated, loading} = useAuthContext()
     const location = useLocation()
 
     if (loading) {
-        return <LoadingSpinner message="Checking authentication..." size="medium"/>;
+        return <Loader />;
     }
 
     return isAuthenticated
@@ -16,11 +16,8 @@ const ProtectedRoute = () => {
 }
 
 export const PublicRoute = () => {
-    const {isAuthenticated, loading} = useAuthContext()
+    const {isAuthenticated} = useAuthContext()
 
-    if (loading) {
-        return <LoadingSpinner message="Checking authentication..." size="medium" />;
-    }
 
     return isAuthenticated
         ? <Navigate to="/home" replace />

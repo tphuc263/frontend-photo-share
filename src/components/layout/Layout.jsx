@@ -1,16 +1,13 @@
 import {useAuthContext} from '../../context/AuthContext'
 import SideBar from './SideBar'
+import {Loader} from '../common/Loader.jsx'
 
 const Layout = ({children}) => {
     const {isAuthenticated, loading} = useAuthContext()
 
     // Show loading state
     if (loading) {
-        return (
-            <div className="loading-screen">
-                <div>Loading...</div>
-            </div>
-        )
+        return <Loader />
     }
 
     // Layout for authenticated users (with sidebar)

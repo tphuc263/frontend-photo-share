@@ -3,6 +3,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom'
 import {useAuthContext} from '../../context/AuthContext'
 import {Eye, EyeOff} from 'lucide-react';
 import {validateCredentials} from "../../utils/helpers.js";
+import {Loader} from "../../components/common/Loader.jsx";
 import '../../assets/styles/pages/authPage.css'
 
 
@@ -15,7 +16,7 @@ const Login = () => {
     const [errors, setErrors] = useState({})
     const [showPassword, setShowPassword] = useState(false)
 
-    const {login, loading} = useAuthContext()
+    const { login, operationLoading: loading } = useAuthContext();
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -49,13 +50,14 @@ const Login = () => {
 
         try {
             const result = await login(formData)
+            console.log("Login result from AuthContext:", result); 
 
             if (result.success) {
                 console.log('Login successful, navigating to:', from)
                 navigate(from, {replace: true})
             } else {
                 setErrors({
-                    submit: result.error || 'Login failed. Please try again.'
+                    submit: result?.error || 'Login failed. Please try again.'
                 })
             }
         } catch (error) {
@@ -160,13 +162,9 @@ const Login = () => {
                         type="submit"
                         disabled={loading}
                         className="submit-btn"
-                        aria-describedby={loading ? 'loading-text' : undefined}
                     >
                         {loading ? (
-                            <>
-                                <span className="loading-spinner">⏳</span>
-                                <span id="loading-text">Signing in...</span>
-                            </>
+                            <Loader active={loading} />
                         ) : (
                             'Sign In'
                         )}
