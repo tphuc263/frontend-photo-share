@@ -5,7 +5,7 @@ export const getUserPhotos = async (userId, page = 0, size = 20) => {
         const response = await api.get(`/photos/user/${userId}`, {
             params: {page, size}
         })
-        return response.data.data;
+        return response.data;
     } catch (error) {
         throw new Error(`Failed to load user photos: ${error.message}`)
     }

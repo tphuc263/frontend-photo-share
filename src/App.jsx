@@ -57,6 +57,7 @@ const HelpPage = () => (
         <h2>❓ Help & Support</h2>
     </div>
 );
+
 const TermsPage = () => (
     <div className="page-placeholder">
         <h2>📄 Terms of Service</h2>

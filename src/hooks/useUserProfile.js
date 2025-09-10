@@ -25,7 +25,8 @@ export const useUserProfile = () => {
         const fetchProfile = async () => {
             setProfile({data: null, loading: true, error: null});
             try {
-                const data = userId ? await getUserProfileById(userId) : await getCurrentUserProfile();
+                    const data = userId ? await getUserProfileById(userId) : await getCurrentUserProfile();
+                console.log("data get from api: " + data)
                 setProfile({data, loading: false, error: null});
             } catch (error) {
                 setProfile({data: null, loading: false, error: error.message});
